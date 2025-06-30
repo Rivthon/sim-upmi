@@ -1,0 +1,76 @@
+@extends('layouts.admin')
+
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h2 class="text-3xl font-extrabold text-gray-800 mb-4 sm:mb-0">Daftar Pelaporan SPMI</h2>
+        <a href="{{ route('admin.pelaporan.create') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Tambah Laporan Baru
+        </a>
+    </div>
+
+    @if (session('success'))
+        <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 mb-6 rounded-md shadow-sm" role="alert">
+            <div class="flex items-center">
+                <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="font-medium">{{ session('success') }}</p>
+            </div>
+        </div>
+    @endif
+
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Unit</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sub Unit</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Periode</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tahapan</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Oleh</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                    @forelse ($pelaporans as $pelaporan)
+                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $pelaporan->judul }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pelaporan->unit }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pelaporan->sub_unit ?? '-' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pelaporan->periode }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pelaporan->tahapan }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ \Carbon\Carbon::parse($pelaporan->tanggal)->format('d F Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold leading-tight
+                                    {{ $pelaporan->status === 'Final' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ $pelaporan->status }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $pelaporan->creator->name ?? '-' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                                <a href="{{ route('admin.pelaporan.show', $pelaporan->id) }}" class="text-blue-600 hover:text-blue-800 hover:underline transition duration-200">Detail</a>
+                                <a href="{{ route('admin.pelaporan.edit', $pelaporan->id) }}" class="text-yellow-600 hover:text-yellow-800 hover:underline transition duration-200">Edit</a>
+                                <form action="{{ route('admin.pelaporan.destroy', $pelaporan->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelaporan ini? Tindakan ini tidak bisa dibatalkan.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-800 hover:underline transition duration-200">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="px-6 py-8 text-center text-gray-500 text-lg">Belum ada pelaporan yang tersedia.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
