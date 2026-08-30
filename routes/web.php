@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\AdminPelaporanSpmiController;
 use App\Http\Controllers\Admin\AdminJadwalAmiController;
 use App\Http\Controllers\Admin\AdminKategoriDokumenController;
-// use App\Http\Controllers\Admin\AdminDokumenController;
 use App\Http\Controllers\Admin\SubKategoriDokumenController;
 use \App\Http\Controllers\Admin\BeritaController;
 use \App\Http\Controllers\Admin\SurveyController;
@@ -44,15 +43,19 @@ Route::middleware(['auth', 'role:admin-upmi'])->prefix('admin')->name('admin.')-
     Route::resource('dokumen', AdminDokumenMutuController::class)->parameters([
     'dokumen' => 'dokumen',
 ]);
+Route::delete('/admin/dokumen/{dokumen}', [AdminDokumenMutuController::class, 'destroy'])->name('dokumen.destroy');
+
     // Route::put('dokumen/{dokumen}', [App\Http\Controllers\Admin\AdminDokumenMutuController::class, 'update'])->name('dokumen.update');
-    Route::get('/admin/dokumen/{dokumen}', [App\Http\Controllers\Admin\AdminDokumenMutuController::class, 'show'])->name('dokumen.show');
+    //Route::get('/admin/dokumen/{dokumen}', [App\Http\Controllers\Admin\AdminDokumenMutuController::class, 'show'])->name('dokumen.show');
     Route::post('user/{user}/reset-password', [UserManagementController::class, 'resetPassword'])->name('user.reset-password');
     Route::resource('pelaporan', AdminPelaporanSpmiController::class);
+Route::delete('admin/pelaporan/{pelaporan}', [AdminPelaporanSpmiController::class, 'destroy'])->name('pelaporan.destroy');
     Route::resource('ami', AdminJadwalAmiController::class)->parameters(['ami' => 'jadwalAmi']);
     Route::patch('ami/{id}/selesaikan', [AdminJadwalAmiController::class, 'selesaikan'])->name('ami.selesaikan');
     Route::put('ami/{ami}/update-temuan', [AdminJadwalAmiController::class, 'updateTemuan'])->name('ami.update_temuan');
 
-    Route::resource('kategori', adminKategoriDokumenController::class);
+    Route::resource('kategori', AdminKategoriDokumenController::class);
+Route::delete('/admin/kategori/{kategori}', [AdminKategoriDokumenController::class, 'destroy'])->name('kategori.destroy');
     Route::resource('subkategori', SubKategoriDokumenController::class);
     Route::resource('berita', BeritaController::class)->parameters([
     'berita' => 'berita' 

@@ -26,7 +26,12 @@
 
         <form action="{{ route('admin.dokumen.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-
+@if($dokumenDirevisi)
+    <input type="hidden" name="revisi_dari" value="{{ $dokumenDirevisi->id }}">
+    <p class="text-sm text-gray-500 mb-4">
+        Revisi dari: <strong>{{ $dokumenDirevisi->judul }}</strong>
+    </p>
+@endif
             {{-- Kode Dokumen --}}
             <div class="mb-5">
                 <label for="kode_dokumen" class="block text-gray-700 text-sm font-semibold mb-2">Kode Dokumen</label>

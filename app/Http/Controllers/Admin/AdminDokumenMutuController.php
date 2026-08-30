@@ -63,6 +63,7 @@ public function store(Request $request)
         'deskripsi' => $request->deskripsi,
         'tipe' => $request->tipe,
         'uploaded_by' => auth()->id(),
+	'revisi_dari'=>$request->revisi_dari,
     ]);
 
     return redirect()->route('admin.dokumen.index')->with('success', 'Dokumen berhasil diunggah.');
@@ -129,18 +130,22 @@ public function show(DokumenMutu $dokumen)
 
 
 
-    public function destroy(DokumenMutu $dokumenMutu)
-    {
-        if (Storage::disk('public')->exists($dokumenMutu->file_path)) {
-            Storage::disk('public')->delete($dokumenMutu->file_path);
-        }
-        $dokumenMutu->delete();
-        return back()->with('success', 'Dokumen berhasil dihapus.');
-    }
 
+public function destroy(DokumenMutu $dokumen)
+{
+//dd($dokumenMutu);
+ // Cek dulu apakah file_path ada dan tidak null
+    if (!empty($dokumen->file_path) && Storage::disk('public')->exists($dokumen->file_path)) {
+        Storage::disk('public')->delete($dokumen->file_path);
+   }
+
+    $dokumen->forceDelete();
+
+    return back()->with('success', 'Dokumen berhasil dihapus.');
+}
     public function __construct()
 {
-    $this->middleware(function ($request, $next) {
+   $this->middleware(function ($request, $next) {
         if (!auth()->user()->hasAnyRole(['admin-upmi', 'super-admin'])) {
             abort(403, 'Akses ditolak.');
         }

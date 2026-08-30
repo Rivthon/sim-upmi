@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Survey extends Model
 {
-    protected $fillable = ['judul', 'target'];
+    protected $fillable = ['judul', 'target','deskripsi'];
 
     protected $casts = [
         'target' => 'array',

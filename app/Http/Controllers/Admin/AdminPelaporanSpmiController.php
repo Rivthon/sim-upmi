@@ -7,6 +7,7 @@ use App\Models\PelaporanSpmi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPelaporanSpmiController extends Controller
 {
@@ -19,34 +20,35 @@ class AdminPelaporanSpmiController extends Controller
     public function create()
     {
         return view('admin.pelaporan.create');
+}
+public function store(Request $request)
+{
+//    dd($request->file('bukti_pendukung')); // Debug dulu
+
+    $data = $request->validate([
+        'judul' => 'required|string|max:255',
+        'unit' => 'required|string',
+        'sub_unit' => 'nullable|string|max:100',
+        'periode' => 'required|string|max:100',
+        'tahapan' => 'required|string|max:100',
+        'deskripsi' => 'nullable|string',
+        'tanggal' => 'required|date',
+        'status' => 'required|in:Draft,Final',
+        'bukti_pendukung' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+    ]);
+
+    if ($request->hasFile('bukti_pendukung')) {
+        $path = $request->file('bukti_pendukung')->store('bukti_pendukung', 'public');
+        $data['bukti_pendukung'] = $path;
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'unit' => 'required|string',
-            'sub_unit' => 'nullable|string|max:100', 
-            'periode' => 'required|string|max:100',
-            'tahapan' => 'required|string|max:100',
-            'deskripsi' => 'nullable|string',
-            'tanggal' => 'required|date',
-            'status' => 'required|in:Draft,Final',
-            'bukti_pendukung' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ]);
+    PelaporanSpmi::create(array_merge($data, [
+        'created_by' => auth()->id(),
+    ]));
 
-        if ($request->hasFile('bukti_pendukung')) {
-            $path = $request->file('bukti_pendukung')->store('bukti_pendukung', 'public');
-            $data['bukti_pendukung'] = $path;
-        }
+    return redirect()->route('admin.pelaporan.index')->with('success', 'Data berhasil disimpan');
+}
 
-        PelaporanSpmi::create(array_merge($data, [
-            // 'unit' => auth()->user()->unit,
-            'created_by' => auth()->id(),
-        ]));
-
-        return redirect()->route('admin.pelaporan.index')->with('success', 'Data berhasil disimpan');
-    }
 public function edit($id)
 {
     $pelaporan = PelaporanSpmi::findOrFail($id);
@@ -82,4 +84,20 @@ public function edit($id)
         $pelaporan->load('creator');
         return view('admin.pelaporan.show', compact('pelaporan'));
     }
+
+public function destroy($pelaporan)
+{
+    $pelaporan = PelaporanSpmi::findOrFail($pelaporan);
+
+    // Hapus file jika ada
+    if (!empty($pelaporan->bukti_pendukung) && Storage::disk('public')->exists($pelaporan->bukti_pendukung)) {
+        Storage::disk('public')->delete($pelaporan->bukti_pendukung);
+    }
+
+    // Hapus data dari database
+    $pelaporan->delete();
+
+    return redirect()->route('admin.pelaporan.index')->with('success', 'Data pelaporan berhasil dihapus.');
+}
+
 }

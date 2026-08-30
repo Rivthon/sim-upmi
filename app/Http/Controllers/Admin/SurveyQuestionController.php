@@ -53,7 +53,7 @@ class SurveyQuestionController extends Controller
 {
     $request->validate([
         'pertanyaan' => 'required|string',
-        'tipe' => 'required|in:text,skala,pilihan,ganda',
+        'tipe' => 'required|in:teks,skala,pilihan,ganda',
     ]);
 
     $tipe = $request->tipe;

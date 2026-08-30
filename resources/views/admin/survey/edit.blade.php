@@ -47,7 +47,6 @@
                                  transition duration-200 @error('deskripsi') border-red-500 @enderror">{{ old('deskripsi', $survey->deskripsi) }}</textarea>
                 @error('deskripsi') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
             </div>
-
             {{-- Target Survey --}}
             <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Target Survei</label>
@@ -55,7 +54,7 @@
                     $targets = old('target', $survey->targets->pluck('target')->toArray()); // Get old input or current survey targets
                 @endphp
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    @foreach(['Prodi', 'Tendik', 'Mahasiswa', 'Dosen', 'Umum'] as $availableTarget) {{-- Add more targets if needed --}}
+                    @foreach(['Prodi D3 Kebidanan','Prodi S1 Farmasi','Prodi S1 Gizi', 'Tendik', 'Mahasiswa'] as $availableTarget) {{-- Add more targets if needed --}}
                         <label class="inline-flex items-center text-gray-700 text-base cursor-pointer">
                             <input type="checkbox" name="target[]" value="{{ $availableTarget }}"
                                    class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300 transition duration-150 ease-in-out"

@@ -53,9 +53,9 @@ public function update(Request $request, $id)
 }
 
 
-    public function destroy(KategoriDokumen $kategoriDokumen)
+    public function destroy(KategoriDokumen $kategori)
     {
-        $kategoriDokumen->delete();
+        $kategori->delete();
 
         return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
     }

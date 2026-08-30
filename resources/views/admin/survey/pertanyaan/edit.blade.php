@@ -45,10 +45,10 @@
                         class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm
                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                                transition duration-200 @error('tipe') border-red-500 @enderror" required>
-                    <option value="text" {{ old('tipe', $pertanyaan->tipe) === 'text' ? 'selected' : '' }}>Teks Bebas</option>
+                    <option value="teks" {{ old('tipe', $pertanyaan->tipe) === 'text' ? 'selected' : '' }}>Teks Bebas</option>
                     <option value="skala" {{ old('tipe', $pertanyaan->tipe) === 'skala' ? 'selected' : '' }}>Skala (1–5)</option>
-                    <option value="pilihan_tunggal" {{ old('tipe', $pertanyaan->tipe) === 'pilihan_tunggal' ? 'selected' : '' }}>Pilihan Tunggal</option>
-                    <option value="pilihan_ganda" {{ old('tipe', $pertanyaan->tipe) === 'pilihan_ganda' ? 'selected' : '' }}>Pilihan Ganda</option>
+                    <option value="pilihan" {{ old('tipe', $pertanyaan->tipe) === 'pilihan' ? 'selected' : '' }}>Pilihan Tunggal</option>
+                    <option value="ganda" {{ old('tipe', $pertanyaan->tipe) === 'ganda' ? 'selected' : '' }}>Pilihan Ganda</option>
                 </select>
                 @error('tipe') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
             </div>
