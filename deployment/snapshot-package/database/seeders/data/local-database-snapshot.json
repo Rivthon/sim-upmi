@@ -1,0 +1,920 @@
+{
+    "exported_at": "2026-11-02T07:34:08+00:00",
+    "database": "sim_upmi",
+    "tables": {
+        "users": [
+            {
+                "id": 1,
+                "name": "Admin UPMI",
+                "email": "upmi@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$8hNWIiJ996SHceqqgCnMK.4NmEvWFZEG26Jw7udes25ieEw.0a3h6",
+                "remember_token": null,
+                "created_at": "2025-06-17 02:43:55",
+                "updated_at": "2025-06-26 03:22:30",
+                "tanggal_lahir": "2002-02-22",
+                "unit": "Prodi S1 Farmasi",
+                "foto": null
+            },
+            {
+                "id": 2,
+                "name": "Della",
+                "email": "della@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$urOlV0LzEGHGMxOq5ggb9eoM0quC4ynaJCrv7YLdEiJoEFrMYIkse",
+                "remember_token": null,
+                "created_at": "2025-06-18 02:18:13",
+                "updated_at": "2025-06-26 03:27:55",
+                "tanggal_lahir": "0001-01-01",
+                "unit": "Tendik",
+                "foto": null
+            },
+            {
+                "id": 3,
+                "name": "apt. Rahmadhani Tyas A., M.Farm.Klin Angganawati",
+                "email": "rahmadhani@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$tHngIeq6zrbPeG65Qq1vL.vJhvEQLd3nDlmeOry3g3mxfPzjvrH2i",
+                "remember_token": "6o4W2AiIcdmzywOfMURhYRlTfxo08y630O1PUL9iTQgFJZ6iNc4RxnQYAKkb",
+                "created_at": "2025-06-21 16:22:33",
+                "updated_at": "2025-07-23 10:52:50",
+                "tanggal_lahir": "2025-06-21",
+                "unit": "Prodi S1 Farmasi",
+                "foto": null
+            },
+            {
+                "id": 6,
+                "name": "Rival Maurizky",
+                "email": "rival@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$brjOIKBlDPY83dxNUmkJ3ewTIYZxOzorpvLKnLuT.WebHb9OnyGo.",
+                "remember_token": null,
+                "created_at": "2025-06-24 05:10:51",
+                "updated_at": "2026-08-30 10:21:49",
+                "tanggal_lahir": "2025-06-24",
+                "unit": "Tendik",
+                "foto": null
+            },
+            {
+                "id": 7,
+                "name": "Hadi",
+                "email": "hadi@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$aZcI7SpxcV9IXzTqm58ch.g52B2jpL0Zrwnz5gzLALT0PZ0fqqCYC",
+                "remember_token": null,
+                "created_at": "2025-06-25 08:20:43",
+                "updated_at": "2025-06-25 08:20:43",
+                "tanggal_lahir": "0001-01-01",
+                "unit": "Tendik",
+                "foto": null
+            },
+            {
+                "id": 8,
+                "name": "Lussy Citra Resmi, M.Pd sbh",
+                "email": "lussy@sbh.ac.id",
+                "email_verified_at": null,
+                "password": "$2y$10$70K6uLpgpJ/1e/FX/kcGV.ohRkd1PVXipiV6e9x2MEqaqqBki.a5q",
+                "remember_token": null,
+                "created_at": "2025-06-26 03:24:54",
+                "updated_at": "2025-06-26 03:24:54",
+                "tanggal_lahir": null,
+                "unit": "Prodi D3 Kebidanan",
+                "foto": null
+            }
+        ],
+        "permissions": [],
+        "roles": [
+            {
+                "id": 1,
+                "name": "admin-upmi",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 2,
+                "name": "dosen",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 4,
+                "name": "auditor",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 5,
+                "name": "pimpinan",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 6,
+                "name": "tendik",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 7,
+                "name": "reviewer",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            },
+            {
+                "id": 8,
+                "name": "mahasiswa",
+                "guard_name": "web",
+                "created_at": "2025-06-17 02:41:02",
+                "updated_at": "2025-06-17 02:41:02"
+            }
+        ],
+        "model_has_permissions": [],
+        "model_has_roles": [
+            {
+                "role_id": 1,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 1,
+                "model_type": "App\\Models\\User",
+                "model_id": 2
+            },
+            {
+                "role_id": 1,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 1,
+                "model_type": "App\\Models\\User",
+                "model_id": 8
+            },
+            {
+                "role_id": 2,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 2,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 2,
+                "model_type": "App\\Models\\User",
+                "model_id": 8
+            },
+            {
+                "role_id": 4,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 4,
+                "model_type": "App\\Models\\User",
+                "model_id": 2
+            },
+            {
+                "role_id": 4,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 4,
+                "model_type": "App\\Models\\User",
+                "model_id": 8
+            },
+            {
+                "role_id": 5,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 5,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 6,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 6,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 6,
+                "model_type": "App\\Models\\User",
+                "model_id": 6
+            },
+            {
+                "role_id": 6,
+                "model_type": "App\\Models\\User",
+                "model_id": 7
+            },
+            {
+                "role_id": 7,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 7,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            },
+            {
+                "role_id": 8,
+                "model_type": "App\\Models\\User",
+                "model_id": 1
+            },
+            {
+                "role_id": 8,
+                "model_type": "App\\Models\\User",
+                "model_id": 3
+            }
+        ],
+        "role_has_permissions": [],
+        "kategori_dokumen": [
+            {
+                "id": 1,
+                "parent_id": null,
+                "nama": "TEST",
+                "tipe": "Publik",
+                "deskripsi": "1",
+                "created_at": "2025-11-21 18:57:03",
+                "updated_at": "2025-11-21 18:57:03"
+            },
+            {
+                "id": 2,
+                "parent_id": null,
+                "nama": "AUDIT MUTU INTERNAL",
+                "tipe": "Publik",
+                "deskripsi": "Berkas AMI 2024-2025 dapat diakses disini",
+                "created_at": "2025-11-21 19:03:01",
+                "updated_at": "2025-11-21 19:03:01"
+            }
+        ],
+        "sub_kategori_dokumens": [
+            {
+                "id": 1,
+                "kategori_dokumen_id": 1,
+                "nama": "123",
+                "slug": "123",
+                "created_at": "2025-11-21 18:57:08",
+                "updated_at": "2025-11-21 18:57:08"
+            },
+            {
+                "id": 2,
+                "kategori_dokumen_id": 2,
+                "nama": "TEST DULU",
+                "slug": "test-dulu",
+                "created_at": "2025-11-21 19:03:12",
+                "updated_at": "2025-11-21 19:03:12"
+            },
+            {
+                "id": 3,
+                "kategori_dokumen_id": 2,
+                "nama": "TEST 21",
+                "slug": "test-21",
+                "created_at": "2025-11-22 18:18:34",
+                "updated_at": "2025-11-22 18:18:34"
+            }
+        ],
+        "dokumen_mutus": [],
+        "document_versions": [],
+        "audits": [],
+        "temuan_audits": [],
+        "pelaporan_spmis": [
+            {
+                "id": 1,
+                "unit": "Tendik",
+                "sub_unit": "Laboran Farmasi",
+                "judul": "321",
+                "periode": "321",
+                "tahapan": "Pelaksanaan",
+                "deskripsi": "321",
+                "tanggal": "1998-07-23",
+                "status": "Draft",
+                "bukti_pendukung": null,
+                "created_by": 1,
+                "created_at": "2025-06-30 04:00:04",
+                "updated_at": "2025-06-30 04:00:04"
+            },
+            {
+                "id": 2,
+                "unit": "Tendik",
+                "sub_unit": "HUMAS",
+                "judul": "1231111",
+                "periode": "123",
+                "tahapan": "Pelaksanaan",
+                "deskripsi": "123",
+                "tanggal": "2025-07-08",
+                "status": "Draft",
+                "bukti_pendukung": "0",
+                "created_by": 1,
+                "created_at": "2025-07-01 09:48:03",
+                "updated_at": "2025-07-01 09:48:30"
+            },
+            {
+                "id": 4,
+                "unit": "Prodi D3 Kebidanan",
+                "sub_unit": null,
+                "judul": "12312",
+                "periode": "321321321",
+                "tahapan": "Penetapan",
+                "deskripsi": "321321312",
+                "tanggal": "2025-07-08",
+                "status": "Draft",
+                "bukti_pendukung": "bukti/8p8kCVbAgazSNCSq2u3r5vOc9C3fOqpDpOv6ORHp.pdf",
+                "created_by": 1,
+                "created_at": "2025-07-01 10:21:23",
+                "updated_at": "2025-07-01 10:28:52"
+            }
+        ],
+        "jadwal_amis": [
+            {
+                "id": 3,
+                "judul": "AMI ICD",
+                "deskripsi": "Mohon siapkan .............\r\nfjedwifjeirw\r\nfewfew\r\nfew\r\nfew\r\nfe\r\nw\r\nfew\r\nfwe",
+                "tanggal_mulai": "2025-06-27",
+                "tanggal_selesai": "2025-06-27",
+                "unit": "Tendik",
+                "sub_unit": "ICT",
+                "tahun": "2025",
+                "status": "Selesai",
+                "dibuat_oleh": 1,
+                "created_at": "2025-06-20 06:59:39",
+                "updated_at": "2025-06-20 08:00:36",
+                "hasil_temuan": null,
+                "tindak_lanjut": null,
+                "status_tindak_lanjut": "belum",
+                "target_selesai_tindak_lanjut": null,
+                "selesai_tindak_lanjut_pada": null
+            },
+            {
+                "id": 4,
+                "judul": "3213213",
+                "deskripsi": "321321321",
+                "tanggal_mulai": "2025-06-21",
+                "tanggal_selesai": "2025-06-21",
+                "unit": "Tendik",
+                "sub_unit": "ICT",
+                "tahun": "1234",
+                "status": "",
+                "dibuat_oleh": 1,
+                "created_at": "2025-06-21 16:23:51",
+                "updated_at": "2025-06-21 16:51:45",
+                "hasil_temuan": "-fjehwfeiuwfewfew\r\n-fewfuheiuwfew\r\n-iowfhjeiowfewfew\r\n-fiejhwfuioewfew",
+                "tindak_lanjut": null,
+                "status_tindak_lanjut": "belum",
+                "target_selesai_tindak_lanjut": null,
+                "selesai_tindak_lanjut_pada": null
+            },
+            {
+                "id": 5,
+                "judul": "1111",
+                "deskripsi": "dsadwq",
+                "tanggal_mulai": "2025-06-23",
+                "tanggal_selesai": "2025-06-24",
+                "unit": "Prodi D3 Kebidanan",
+                "sub_unit": null,
+                "tahun": "2023",
+                "status": "",
+                "dibuat_oleh": 1,
+                "created_at": "2025-06-21 16:35:21",
+                "updated_at": "2025-06-21 16:37:20",
+                "hasil_temuan": null,
+                "tindak_lanjut": null,
+                "status_tindak_lanjut": "belum",
+                "target_selesai_tindak_lanjut": null,
+                "selesai_tindak_lanjut_pada": null
+            },
+            {
+                "id": 6,
+                "judul": "AMI D3 Kebidanan",
+                "deskripsi": "321321321",
+                "tanggal_mulai": "2025-06-23",
+                "tanggal_selesai": "2025-06-24",
+                "unit": "Prodi D3 Kebidanan",
+                "sub_unit": null,
+                "tahun": "6234",
+                "status": "",
+                "dibuat_oleh": 1,
+                "created_at": "2025-06-21 16:45:48",
+                "updated_at": "2025-06-30 04:02:47",
+                "hasil_temuan": null,
+                "tindak_lanjut": null,
+                "status_tindak_lanjut": "belum",
+                "target_selesai_tindak_lanjut": null,
+                "selesai_tindak_lanjut_pada": null
+            },
+            {
+                "id": 7,
+                "judul": "AMI UPT",
+                "deskripsi": "12312321",
+                "tanggal_mulai": "2025-07-01",
+                "tanggal_selesai": "2025-07-04",
+                "unit": "Tendik",
+                "sub_unit": "ICT",
+                "tahun": "2025",
+                "status": "",
+                "dibuat_oleh": 1,
+                "created_at": "2025-07-01 10:30:57",
+                "updated_at": "2025-07-01 10:32:34",
+                "hasil_temuan": "1. Belum Ada SOP yang terbaru\r\n2.permintaan Website masih Secara omongan\r\n3.belum ada form untuk permintaan Website",
+                "tindak_lanjut": "Diharapkan Membuat form , SOP dan Dokumen lainnya , dirundingkan kembali dengan KA UPT nya !",
+                "status_tindak_lanjut": "belum",
+                "target_selesai_tindak_lanjut": null,
+                "selesai_tindak_lanjut_pada": null
+            }
+        ],
+        "auditor_jadwal_ami": [
+            {
+                "id": 1,
+                "jadwal_ami_id": 4,
+                "user_id": 3,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 5,
+                "jadwal_ami_id": 5,
+                "user_id": 3,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 7,
+                "jadwal_ami_id": 6,
+                "user_id": 3,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 9,
+                "jadwal_ami_id": 6,
+                "user_id": 2,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 10,
+                "jadwal_ami_id": 6,
+                "user_id": 8,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 11,
+                "jadwal_ami_id": 7,
+                "user_id": 2,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 12,
+                "jadwal_ami_id": 7,
+                "user_id": 3,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 13,
+                "jadwal_ami_id": 7,
+                "user_id": 8,
+                "created_at": null,
+                "updated_at": null
+            },
+            {
+                "id": 14,
+                "jadwal_ami_id": 7,
+                "user_id": 1,
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "beritas": [],
+        "surveys": [
+            {
+                "id": 24,
+                "judul": "TEST SURVEI KEPUASAN TENDIK",
+                "deskripsi": null,
+                "target": null,
+                "is_aktif": 0,
+                "created_at": "2025-06-25 08:01:08",
+                "updated_at": "2025-06-25 08:01:08"
+            },
+            {
+                "id": 27,
+                "judul": "TEST Survey SBH",
+                "deskripsi": "INI TEST AJA",
+                "target": null,
+                "is_aktif": 0,
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            }
+        ],
+        "survey_targets": [
+            {
+                "id": 26,
+                "survey_id": 24,
+                "target": "Tendik",
+                "created_at": "2025-06-25 08:01:08",
+                "updated_at": "2025-06-25 08:01:08"
+            },
+            {
+                "id": 41,
+                "survey_id": 27,
+                "target": "Prodi D3 Kebidanan",
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 42,
+                "survey_id": 27,
+                "target": "Prodi S1 Farmasi",
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 43,
+                "survey_id": 27,
+                "target": "Prodi S1 Gizi",
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 44,
+                "survey_id": 27,
+                "target": "Tendik",
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 45,
+                "survey_id": 27,
+                "target": "Mahasiswa",
+                "created_at": "2025-07-01 11:29:01",
+                "updated_at": "2025-07-01 11:29:01"
+            }
+        ],
+        "survey_questions": [
+            {
+                "id": 56,
+                "pertanyaan": "TEST TEKS",
+                "tipe": "teks",
+                "opsi": null,
+                "created_at": "2025-06-25 08:01:43",
+                "updated_at": "2025-06-25 08:01:43",
+                "survey_id": 24
+            },
+            {
+                "id": 57,
+                "pertanyaan": "TEST SKALA",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2025-06-25 08:01:43",
+                "updated_at": "2025-06-25 08:01:43",
+                "survey_id": 24
+            },
+            {
+                "id": 58,
+                "pertanyaan": "TEST GANDA",
+                "tipe": "ganda",
+                "opsi": "\"[\\\"1\\\",\\\"2\\\",\\\"3\\\"]\"",
+                "created_at": "2025-06-25 08:01:43",
+                "updated_at": "2025-06-25 08:01:43",
+                "survey_id": 24
+            },
+            {
+                "id": 59,
+                "pertanyaan": "TEST TUNGGAL",
+                "tipe": "pilihan",
+                "opsi": "\"[\\\"1\\\",\\\"2\\\",\\\"3\\\"]\"",
+                "created_at": "2025-06-25 08:01:43",
+                "updated_at": "2025-06-25 08:01:43",
+                "survey_id": 24
+            },
+            {
+                "id": 68,
+                "pertanyaan": "TEST 1",
+                "tipe": "teks",
+                "opsi": null,
+                "created_at": "2025-07-01 11:29:39",
+                "updated_at": "2025-07-01 11:29:39",
+                "survey_id": 27
+            },
+            {
+                "id": 69,
+                "pertanyaan": "TEST 2",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2025-07-01 11:29:39",
+                "updated_at": "2025-07-01 11:29:39",
+                "survey_id": 27
+            },
+            {
+                "id": 70,
+                "pertanyaan": "TEST 3",
+                "tipe": "pilihan",
+                "opsi": "\"[\\\"baik\\\",\\\"cukup\\\",\\\"jelek\\\"]\"",
+                "created_at": "2025-07-01 11:29:39",
+                "updated_at": "2025-07-01 11:29:39",
+                "survey_id": 27
+            },
+            {
+                "id": 71,
+                "pertanyaan": "Test 4",
+                "tipe": "ganda",
+                "opsi": "\"[\\\"baik\\\",\\\"cukup\\\",\\\"jelek\\\"]\"",
+                "created_at": "2025-07-01 11:29:39",
+                "updated_at": "2025-07-01 11:29:39",
+                "survey_id": 27
+            }
+        ],
+        "survey_question_options": [],
+        "jawabans": [],
+        "survey_responses": [
+            {
+                "id": 30,
+                "survey_id": 24,
+                "question_id": 56,
+                "user_id": 6,
+                "jawaban": "TEST",
+                "created_at": "2025-06-25 08:02:00",
+                "updated_at": "2025-06-25 08:02:00"
+            },
+            {
+                "id": 31,
+                "survey_id": 24,
+                "question_id": 57,
+                "user_id": 6,
+                "jawaban": "5",
+                "created_at": "2025-06-25 08:02:00",
+                "updated_at": "2025-06-25 08:02:00"
+            },
+            {
+                "id": 32,
+                "survey_id": 24,
+                "question_id": 58,
+                "user_id": 6,
+                "jawaban": "[\"2\",\"3\"]",
+                "created_at": "2025-06-25 08:02:00",
+                "updated_at": "2025-06-25 08:02:00"
+            },
+            {
+                "id": 33,
+                "survey_id": 24,
+                "question_id": 59,
+                "user_id": 6,
+                "jawaban": "2",
+                "created_at": "2025-06-25 08:02:00",
+                "updated_at": "2025-06-25 08:02:00"
+            },
+            {
+                "id": 34,
+                "survey_id": 24,
+                "question_id": 56,
+                "user_id": 7,
+                "jawaban": "TAK",
+                "created_at": "2025-06-25 08:21:29",
+                "updated_at": "2025-06-25 08:21:29"
+            },
+            {
+                "id": 35,
+                "survey_id": 24,
+                "question_id": 57,
+                "user_id": 7,
+                "jawaban": "4",
+                "created_at": "2025-06-25 08:21:29",
+                "updated_at": "2025-06-25 08:21:29"
+            },
+            {
+                "id": 36,
+                "survey_id": 24,
+                "question_id": 58,
+                "user_id": 7,
+                "jawaban": "[\"1\",\"2\",\"3\"]",
+                "created_at": "2025-06-25 08:21:29",
+                "updated_at": "2025-06-25 08:21:29"
+            },
+            {
+                "id": 37,
+                "survey_id": 24,
+                "question_id": 59,
+                "user_id": 7,
+                "jawaban": "2",
+                "created_at": "2025-06-25 08:21:29",
+                "updated_at": "2025-06-25 08:21:29"
+            },
+            {
+                "id": 38,
+                "survey_id": 27,
+                "question_id": 68,
+                "user_id": 6,
+                "jawaban": "TEST AJA",
+                "created_at": "2025-07-01 11:30:00",
+                "updated_at": "2025-07-01 11:30:00"
+            },
+            {
+                "id": 39,
+                "survey_id": 27,
+                "question_id": 69,
+                "user_id": 6,
+                "jawaban": "5",
+                "created_at": "2025-07-01 11:30:00",
+                "updated_at": "2025-07-01 11:30:00"
+            },
+            {
+                "id": 40,
+                "survey_id": 27,
+                "question_id": 70,
+                "user_id": 6,
+                "jawaban": "baik",
+                "created_at": "2025-07-01 11:30:00",
+                "updated_at": "2025-07-01 11:30:00"
+            },
+            {
+                "id": 41,
+                "survey_id": 27,
+                "question_id": 71,
+                "user_id": 6,
+                "jawaban": "[\"cukup\",\"jelek\"]",
+                "created_at": "2025-07-01 11:30:00",
+                "updated_at": "2025-07-01 11:30:00"
+            }
+        ],
+        "site_contents": [
+            {
+                "id": 1,
+                "section": "hero",
+                "key": "hero-main",
+                "title": "Budaya mutu yang transparan, terukur, dan berkelanjutan.",
+                "subtitle": "Sistem Penjaminan Mutu Internal",
+                "body": "UPMI STIKes Bogor Husada mengelola dokumen mutu, audit internal, survey, dan pelaporan SPMI dalam satu sistem yang lebih tertata.",
+                "button_label": "Jelajahi Dokumen",
+                "button_url": "/dokumen-publik",
+                "image_path": null,
+                "sort_order": 1,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 2,
+                "section": "about",
+                "key": "about-main",
+                "title": "Menjaga standar mutu dengan kerja yang konsisten.",
+                "subtitle": "Tentang UPMI",
+                "body": "Unit Penjaminan Mutu Internal memastikan pelaksanaan SPMI berjalan objektif, transparan, dan partisipatif untuk mendukung mutu akademik dan non-akademik.",
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 1,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:33:34"
+            },
+            {
+                "id": 3,
+                "section": "service",
+                "key": "service-ami",
+                "title": "Audit Mutu Internal",
+                "subtitle": null,
+                "body": "Pelaksanaan audit berkala untuk menilai kesesuaian standar dan praktik mutu.",
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 1,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 4,
+                "section": "service",
+                "key": "service-pelaporan",
+                "title": "Pelaporan SPMI",
+                "subtitle": null,
+                "body": "Dokumentasi pelaksanaan siklus penjaminan mutu pada setiap unit kerja.",
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 2,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 5,
+                "section": "service",
+                "key": "service-dokumen",
+                "title": "Dokumen Mutu",
+                "subtitle": null,
+                "body": "Pengelolaan dokumen standar, manual, formulir, dan arsip mutu.",
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 3,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 6,
+                "section": "document",
+                "key": "document-main",
+                "title": "Akses dokumen mutu yang sudah dipublikasikan.",
+                "subtitle": "Dokumen publik",
+                "body": "Temukan dokumen standar, manual, dan informasi mutu yang dapat diakses publik.",
+                "button_label": "Buka Dokumen Publik",
+                "button_url": "/dokumen-publik",
+                "image_path": null,
+                "sort_order": 1,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 7,
+                "section": "document",
+                "key": "document-manual",
+                "title": "Manual SPMI",
+                "subtitle": null,
+                "body": null,
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 2,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 8,
+                "section": "document",
+                "key": "document-standar",
+                "title": "Standar Mutu",
+                "subtitle": null,
+                "body": null,
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 3,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 9,
+                "section": "document",
+                "key": "document-ami",
+                "title": "Laporan AMI",
+                "subtitle": null,
+                "body": null,
+                "button_label": null,
+                "button_url": null,
+                "image_path": null,
+                "sort_order": 4,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            },
+            {
+                "id": 10,
+                "section": "contact",
+                "key": "contact-main",
+                "title": "Butuh informasi lebih lanjut?",
+                "subtitle": "Kontak",
+                "body": "Tim Unit Penjaminan Mutu Internal STIKes Bogor Husada siap membantu kebutuhan informasi mutu akademik dan non-akademik.",
+                "button_label": "Hubungi UPMI",
+                "button_url": "mailto:upmi@stikesbogorhusada.ac.id",
+                "image_path": null,
+                "sort_order": 1,
+                "is_active": 1,
+                "created_at": "2026-08-30 09:21:25",
+                "updated_at": "2026-08-30 09:21:25"
+            }
+        ],
+        "app_notifications": [],
+        "quality_standards": [],
+        "quality_indicators": [],
+        "ppepp_monitorings": [],
+        "management_reviews": [],
+        "capas": [],
+        "quality_calendars": [],
+        "quality_risks": [],
+        "unit_monitorings": [],
+        "accreditations": [],
+        "quality_recommendations": []
+    }
+}
