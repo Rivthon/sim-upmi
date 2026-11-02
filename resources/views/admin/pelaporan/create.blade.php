@@ -141,7 +141,7 @@
             
             @if(isset($pelaporan) && $pelaporan->bukti_pendukung)
                 <p class="mt-2 text-sm text-gray-600">File saat ini:
-                    <a href="{{ asset('storage/' . $pelaporan->bukti_pendukung) }}" class="text-blue-600 hover:text-blue-800 underline transition duration-200" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ route('admin.pelaporan.download', $pelaporan->id) }}" class="text-blue-600 hover:text-blue-800 underline transition duration-200">
                         {{ basename($pelaporan->bukti_pendukung) }}
                     </a>
                 </p>
@@ -159,7 +159,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const unitSelect = document.getElementById('unit');
-    const subunitWrapper = document.getElementById('subunit-wrapper');
+    const subunitWrapper = document.getElementById('sub-unit-wrapper');
 
     function toggleSubUnit() {
         if (unitSelect.value === 'Tendik') {

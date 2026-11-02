@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Providers\RouteServiceProvider;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,10 +14,10 @@ class RegistrationTest extends TestCase
     {
         $response = $this->get('/register');
 
-        $response->assertStatus(200);
+        $response->assertForbidden();
     }
 
-    public function test_new_users_can_register(): void
+    public function test_public_users_can_not_register(): void
     {
         $response = $this->post('/register', [
             'name' => 'Test User',
@@ -26,7 +26,10 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertForbidden();
+        $this->assertGuest();
+        $this->assertDatabaseMissing(User::class, [
+            'email' => 'test@example.com',
+        ]);
     }
 }

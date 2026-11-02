@@ -1,75 +1,78 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Sub Kategori')
+@section('title', 'Tambah Sub Kategori Dokumen')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg">
-        <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 pb-4">Tambah Sub Kategori</h2>
-        
-        {{-- Pesan Error Umum --}}
-        @if ($errors->any())
-            <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 mb-6 rounded-md" role="alert">
-                <div class="flex items-center">
-                    <svg class="h-5 w-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                    </svg>
-                    <p class="font-bold">Terjadi Kesalahan!</p>
-                </div>
-                <ul class="mt-2 text-sm list-disc ml-5 space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+<div class="mx-auto max-w-5xl">
+    <section class="admin-glass overflow-hidden rounded-[1.75rem] p-6 md:p-8">
+        <div class="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Dokumen Mutu</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-slate-950 md:text-4xl">Tambah Sub Kategori</h2>
+                <p class="mt-2 max-w-2xl leading-7 text-slate-600">Hubungkan subkategori dengan kategori induk agar dokumen lebih mudah ditelusuri.</p>
             </div>
-        @endif
-        
-        <form action="{{ route('admin.subkategori.store') }}" method="POST">
+            <a href="{{ route('admin.subkategori.index') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/70 px-5 py-3 text-sm font-extrabold text-slate-700 ring-1 ring-white transition hover:bg-white hover:text-teal-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Kembali
+            </a>
+        </div>
+    </section>
+
+    @if ($errors->any())
+        <div class="mt-5 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-red-700">
+            <p class="font-extrabold">Data belum bisa disimpan.</p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm font-semibold">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <section class="admin-glass mt-6 rounded-[1.5rem] p-6 md:p-8">
+        <form action="{{ route('admin.subkategori.store') }}" method="POST" class="space-y-6">
             @csrf
-            
-            {{-- Kategori Dokumen --}}
-            <div class="mb-5">
-                <label for="kategori_dokumen_id" class="block text-gray-700 text-sm font-semibold mb-2">Kategori Dokumen</label>
-                <select name="kategori_dokumen_id" id="kategori_dokumen_id" 
-                        class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm
-                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                               transition duration-200 @error('kategori_dokumen_id') border-red-500 @enderror" required>
-                    <option value="">-- Pilih Kategori --</option>
-                    @foreach($kategoris as $kategori)
-                        <option value="{{ $kategori->id }}" {{ old('kategori_dokumen_id') == $kategori->id ? 'selected' : '' }}>
-                            {{ $kategori->nama }} - {{ ucfirst($kategori->tipe) }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('kategori_dokumen_id') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
+
+            <div class="grid gap-5 md:grid-cols-2">
+                <div>
+                    <label for="kategori_dokumen_id" class="mb-2 block text-sm font-extrabold text-slate-700">Kategori Induk</label>
+                    <select name="kategori_dokumen_id" id="kategori_dokumen_id" class="block w-full rounded-2xl border border-white/70 bg-white/75 px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-500/10 @error('kategori_dokumen_id') border-red-300 @enderror" required>
+                        <option value="">Pilih kategori induk</option>
+                        @foreach ($kategoris as $kategori)
+                            <option value="{{ $kategori->id }}" {{ old('kategori_dokumen_id') == $kategori->id ? 'selected' : '' }}>
+                                {{ $kategori->nama }} - {{ $kategori->tipe }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kategori_dokumen_id') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label for="nama" class="mb-2 block text-sm font-extrabold text-slate-700">Nama Sub Kategori</label>
+                    <input type="text" id="nama" name="nama" value="{{ old('nama') }}" class="block w-full rounded-2xl border border-white/70 bg-white/75 px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-teal-400 focus:ring-4 focus:ring-teal-500/10 @error('nama') border-red-300 @enderror" placeholder="Contoh: Kebijakan Mutu" required>
+                    @error('nama') <p class="mt-2 text-xs font-bold text-red-600">{{ $message }}</p> @enderror
+                </div>
             </div>
 
-            {{-- Nama Sub Kategori --}}
-            <div class="mb-6">
-                <label for="nama" class="block text-gray-700 text-sm font-semibold mb-2">Nama Sub Kategori</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama') }}" 
-                       class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                              transition duration-200 @error('nama') border-red-500 @enderror" required>
-                @error('nama') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
+            <div class="rounded-2xl border border-white/70 bg-white/50 p-5">
+                <p class="text-sm font-extrabold text-slate-800">Catatan</p>
+                <p class="mt-1 text-sm leading-6 text-slate-600">Subkategori akan muncul sebagai opsi saat admin mengunggah atau mengedit dokumen mutu.</p>
             </div>
 
-            <div class="flex justify-end space-x-4">
-                <a href="{{ route('admin.subkategori.index') }}" 
-                   class="inline-flex items-center px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-sm
-                          transition duration-300 ease-in-out transform hover:scale-105">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <div class="flex flex-col-reverse gap-3 border-t border-white/70 pt-6 sm:flex-row sm:justify-end">
+                <a href="{{ route('admin.subkategori.index') }}" class="inline-flex items-center justify-center rounded-2xl bg-white/70 px-5 py-3 text-sm font-extrabold text-slate-700 ring-1 ring-white transition hover:bg-white">
                     Batal
                 </a>
-                <button type="submit" 
-                        class="inline-flex items-center bg-blue-600 text-white font-bold py-2.5 px-6 rounded-lg shadow-md
-                               hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                               transition duration-300 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg">
-                    <svg class="w-5 h-5 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-slate-900/20 transition hover:bg-teal-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
                     Simpan Sub Kategori
                 </button>
             </div>
         </form>
-    </div>
+    </section>
 </div>
 @endsection

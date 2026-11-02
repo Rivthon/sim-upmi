@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('pertanyaans', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('survei_id')->constrained()->onDelete('cascade');
-    $table->text('isi');
-    $table->timestamps();
-});
-
+        Schema::create('survey_questions', function (Blueprint $table) {
+            $table->id();
+            $table->text('pertanyaan');
+            $table->string('tipe')->default('teks');
+            $table->json('opsi')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -25,6 +25,6 @@ Schema::create('pertanyaans', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('pertanyaans');
+        Schema::dropIfExists('survey_questions');
     }
 };

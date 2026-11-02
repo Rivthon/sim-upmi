@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::table('users', function (Blueprint $table) {
-        $table->date('tanggal_lahir')->nullable();
-        $table->string('unit')->nullable(); // "Tendik", "Prodi Gizi", dll
-    });
+        Schema::table('users', function (Blueprint $table) {
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('unit')->nullable();
+        });
     }
 
     /**
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn(['tanggal_lahir', 'unit']);
         });
     }
 };

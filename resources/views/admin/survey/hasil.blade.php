@@ -60,10 +60,10 @@
                                     new Chart(ctx.getContext('2d'), {
                                         type: 'bar',
                                         data: {
-                                            labels: {!! json_encode(array_keys($question->result_counts ?? [])) !!},
+                                            labels: @json(array_keys($question->result_counts ?? [])),
                                             datasets: [{
                                                 label: 'Jumlah Jawaban',
-                                                data: {!! json_encode(array_values($question->result_counts ?? [])) !!},
+                                                data: @json(array_values($question->result_counts ?? [])),
                                                 backgroundColor: [
                                                     'rgba(59, 130, 246, 0.8)', // blue-500
                                                     'rgba(168, 85, 247, 0.8)', // purple-500

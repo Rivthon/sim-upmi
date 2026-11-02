@@ -3,76 +3,74 @@
 @section('title', 'Tambah Berita')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg">
-        <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 pb-4">Tambah Berita & Pengumuman</h2>
-        
-        {{-- Pesan Error Umum --}}
-        @if ($errors->any())
-            <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 mb-6 rounded-md" role="alert">
-                <div class="flex items-center">
-                    <svg class="h-5 w-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                    </svg>
-                    <p class="font-bold">Terjadi Kesalahan!</p>
-                </div>
-                <ul class="mt-2 text-sm list-disc ml-5 space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+<div class="mx-auto max-w-6xl">
+    <section class="admin-glass rounded-[1.75rem] p-6 md:p-8">
+        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Website</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-slate-950 md:text-4xl">Tambah Berita</h2>
+                <p class="mt-2 max-w-2xl leading-7 text-slate-600">Buat artikel atau pengumuman baru untuk halaman publik UPMI.</p>
             </div>
-        @endif
+            <a href="{{ route('admin.berita.index') }}" class="rounded-2xl bg-white/75 px-5 py-3 text-center text-sm font-extrabold text-slate-700 ring-1 ring-white hover:bg-white">
+                Kembali
+            </a>
+        </div>
+    </section>
 
-        <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+    @if ($errors->any())
+        <div class="mt-5 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-red-700">
+            <p class="font-extrabold">Terjadi kesalahan.</p>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-            {{-- Judul Berita --}}
-            <div class="mb-5">
-                <label for="judul" class="block text-gray-700 text-sm font-semibold mb-2">Judul Berita</label>
-                <input type="text" name="judul" id="judul" value="{{ old('judul') }}"
-                       class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                              transition duration-200 @error('judul') border-red-500 @enderror" required>
-                @error('judul') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
-            </div>
+    <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" class="mt-6 grid gap-6 lg:grid-cols-[1.35fr_.65fr]">
+        @csrf
 
-            {{-- Narasi Lengkap --}}
-            <div class="mb-5">
-                <label for="narasi" class="block text-gray-700 text-sm font-semibold mb-2">Narasi Lengkap</label>
-                <textarea id="narasi" name="narasi" rows="10"
-                          class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm
-                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                                 transition duration-200 @error('narasi') border-red-500 @enderror">{{ old('narasi') }}</textarea>
-                @error('narasi') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
+        <div class="admin-glass rounded-[1.5rem] p-6">
+            <div>
+                <label for="judul" class="mb-2 block text-sm font-bold text-slate-700">Judul Berita</label>
+                <input type="text" name="judul" id="judul" value="{{ old('judul') }}" class="w-full rounded-2xl border-slate-200 bg-white/80 px-4 py-3 text-slate-900 focus:border-teal-500 focus:ring-teal-500" required>
+                @error('judul') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            {{-- Gambar --}}
-            <div class="mb-6">
-                <label for="gambar" class="block text-gray-700 text-sm font-semibold mb-2">Gambar</label>
-                <input type="file" name="gambar" id="gambar" accept="image/*"
-                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('gambar') border-red-500 @enderror">
-                <p class="text-sm text-gray-500 mt-2">Unggah gambar dengan format JPG, PNG, atau GIF.</p>
-                @error('gambar') <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p> @enderror
+            <div class="mt-5">
+                <label for="narasi" class="mb-2 block text-sm font-bold text-slate-700">Narasi Lengkap</label>
+                <textarea id="narasi" name="narasi" rows="14" class="w-full rounded-2xl border-slate-200 bg-white/80 px-4 py-3 text-slate-900 focus:border-teal-500 focus:ring-teal-500">{{ old('narasi') }}</textarea>
+                @error('narasi') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <aside class="admin-glass h-fit rounded-[1.5rem] p-6">
+            <h3 class="text-xl font-extrabold text-slate-950">Media & Publikasi</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Gunakan gambar yang jelas agar kartu berita di halaman depan terlihat profesional.</p>
+
+            <div class="mt-5 rounded-2xl border border-dashed border-teal-300 bg-white/55 p-5">
+                <label for="gambar" class="mb-3 block text-sm font-bold text-slate-700">Gambar Berita</label>
+                <input type="file" name="gambar" id="gambar" accept="image/*" class="w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm file:mr-4 file:rounded-full file:border-0 file:bg-teal-50 file:px-4 file:py-2 file:text-sm file:font-bold file:text-teal-700 hover:file:bg-teal-100">
+                <p class="mt-3 text-xs leading-5 text-slate-500">Format gambar JPG, PNG, GIF, atau WebP. Maksimal 5 MB.</p>
+                @error('gambar') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            {{-- Tombol Submit --}}
-            <div class="flex justify-end space-x-4">
-                <a href="{{ route('admin.berita.index') }}"
-                   class="inline-flex items-center px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-sm
-                          transition duration-300 ease-in-out transform hover:scale-105">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Batal
-                </a>
-                <button type="submit"
-                        class="inline-flex items-center bg-blue-600 text-white font-bold py-2.5 px-6 rounded-lg shadow-md
-                               hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                               transition duration-300 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg">
-                    <svg class="w-5 h-5 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+            <div class="mt-6 rounded-2xl bg-slate-950 p-5 text-white">
+                <p class="text-sm font-bold text-teal-100">Status</p>
+                <p class="mt-2 text-lg font-extrabold">Siap dipublikasikan</p>
+                <p class="mt-2 text-sm leading-6 text-cyan-50/75">Setelah disimpan, berita akan masuk daftar admin dan dapat tampil di halaman publik.</p>
+            </div>
+
+            <div class="mt-6 grid gap-3">
+                <button type="submit" class="rounded-2xl bg-teal-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-teal-700/20 hover:bg-teal-700">
                     Simpan Berita
                 </button>
+                <a href="{{ route('admin.berita.index') }}" class="rounded-2xl bg-white/80 px-6 py-3 text-center text-sm font-extrabold text-slate-700 ring-1 ring-white hover:bg-white">
+                    Batal
+                </a>
             </div>
-        </form>
-    </div>
+        </aside>
+    </form>
 </div>
 @endsection

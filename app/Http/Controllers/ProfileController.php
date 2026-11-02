@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route($this->profileEditRoute($request->user()))->with('status', 'profile-updated');
     }
 
     /**
@@ -56,5 +56,10 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    private function profileEditRoute($user): string
+    {
+        return $user->hasRole('admin-upmi') ? 'admin.profile.edit' : 'user.profile.edit';
     }
 }

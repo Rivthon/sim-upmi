@@ -35,7 +35,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('user.survey.submit', $survey->id) }}">
+        <form method="POST" action="{{ route('user.survey.store', $survey->id) }}">
             @csrf
 
             <div class="space-y-8"> {{-- Added space-y for consistent spacing between questions --}}

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\KategoriDokumen;
 use Illuminate\Http\Request;
@@ -9,7 +10,8 @@ class AdminKategoriDokumenController extends Controller
 {
     public function index()
     {
-        $kategoris = KategoriDokumen::all();
+        $kategoris = KategoriDokumen::withCount(['subKategoris', 'dokumenMutus'])->latest()->get();
+
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -20,38 +22,37 @@ class AdminKategoriDokumenController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'nama' => 'required|string|max:255',
             'tipe' => 'required|in:Publik,Internal',
             'deskripsi' => 'nullable|string',
         ]);
 
-        KategoriDokumen::create($request->all());
+        KategoriDokumen::create($data);
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-public function edit($id)
-{
-    $kategori = KategoriDokumen::findOrFail($id);
-    return view('admin.kategori.edit', compact('kategori'));
-}
+    public function edit($id)
+    {
+        $kategori = KategoriDokumen::findOrFail($id);
 
+        return view('admin.kategori.edit', compact('kategori'));
+    }
 
-public function update(Request $request, $id)
-{
-    $data = $request->validate([
-        'nama' => 'required|string|max:255',
-        'tipe' => 'required|in:Publik,Internal',
-        'deskripsi' => 'nullable|string',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'tipe' => 'required|in:Publik,Internal',
+            'deskripsi' => 'nullable|string',
+        ]);
 
-    $kategori = KategoriDokumen::findOrFail($id);
-    $kategori->update($data);
+        $kategori = KategoriDokumen::findOrFail($id);
+        $kategori->update($data);
 
-    return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
-}
-
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+    }
 
     public function destroy(KategoriDokumen $kategori)
     {

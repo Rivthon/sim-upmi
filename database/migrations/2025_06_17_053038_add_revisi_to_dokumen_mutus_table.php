@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('dokumen_mutus', function (Blueprint $table) {
-$table->unsignedBigInteger('revisi_dari')->nullable(); // relasi ke dokumen lama
+        if (Schema::hasColumn('dokumen_mutus', 'revisi_dari')) {
+            return;
+        }
 
+        Schema::table('dokumen_mutus', function (Blueprint $table) {
+            $table->unsignedBigInteger('revisi_dari')->nullable();
         });
     }
 
@@ -22,8 +25,12 @@ $table->unsignedBigInteger('revisi_dari')->nullable(); // relasi ke dokumen lama
      */
     public function down(): void
     {
+        if (! Schema::hasColumn('dokumen_mutus', 'revisi_dari')) {
+            return;
+        }
+
         Schema::table('dokumen_mutus', function (Blueprint $table) {
-            //
+            $table->dropColumn('revisi_dari');
         });
     }
 };

@@ -3,77 +3,64 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Survey;
+use App\Models\SurveyQuestion;
 use App\Models\SurveyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\SurveyQuestion;
 
 class UserSurveyController extends Controller
 {
     public function index()
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
+        $targets = $this->targetsFor($user);
 
-    // Cek target sesuai role
-    if ($user->hasRole('Prodi')) {
-        $target = 'Prodi';
-    } elseif ($user->hasRole('Tendik')) {
-        $target = 'Tendik';
-    } elseif ($user->hasRole('Mahasiswa')) {
-        $target = 'Mahasiswa';
-    } else {
-        $target = null;
-    }
+        $surveys = Survey::with('responses')
+            ->whereHas('targets', function ($q) use ($targets) {
+                $q->whereIn('target', $targets);
+            })
+            ->get();
 
-    // Ambil survei sesuai target
-    $surveys = Survey::whereHas('targets', function ($q) {
-    $q->where('target', 'Tendik');
-})->get(); // ✅ Ini benar
-
-     foreach ($surveys as $survey) {
-        $survey->sudah_isi = $survey->responses->where('user_id', $user->id)->count() > 0;
-    }
-    return view('user.survey.index', compact('surveys'));
-}
-
-   // public function index()
-// {
-//     $user = auth()->user();
-//     $unit = $user->unit; // Misal "Tendik", "Prodi S1 Farmasi", dst
-
-//     $surveys = Survey::whereHas('targets', function ($q) use ($unit) {
-//         $q->where('target', $unit);
-//     })->with('responses')->get();
-
-//     foreach ($surveys as $survey) {
-//         $survey->sudah_isi = $survey->responses->where('user_id', $user->id)->count() > 0;
-//     }
-
-//     return view('user.survey.index', compact('surveys'));
-// }
-
-
-    // Form isi survei
-public function fill($id)
-{
-        $survey = Survey::with('questions')->findOrFail($id);
-
-    foreach ($survey->questions as $q) {
-        if (in_array($q->tipe, ['pilihan', 'ganda'])) {
-            $q->opsi = json_decode($q->opsi, true);
+        foreach ($surveys as $survey) {
+            $survey->sudah_isi = $survey->responses->where('user_id', $user->id)->count() > 0;
         }
+
+        return view('user.survey.index', compact('surveys'));
     }
-    $questions = SurveyQuestion::where('survey_id', $survey->id)->get();
 
-    return view('user.survey.fill', compact('survey', 'questions'));
-}
+    public function fill($id)
+    {
+        $survey = Survey::with(['questions', 'targets'])->findOrFail($id);
 
-    // Simpan jawaban survei
+        abort_unless($this->canAccessSurvey($survey), 403, 'Anda tidak memiliki akses untuk mengisi survei ini.');
+
+        foreach ($survey->questions as $question) {
+            if (in_array($question->tipe, ['pilihan', 'ganda'])) {
+                $question->opsi = is_array($question->opsi) ? $question->opsi : json_decode($question->opsi, true);
+            }
+        }
+
+        $questions = SurveyQuestion::where('survey_id', $survey->id)->get();
+
+        return view('user.survey.fill', compact('survey', 'questions'));
+    }
+
     public function store(Request $request, $id)
     {
-        $survey = Survey::with('questions')->findOrFail($id);
+        $survey = Survey::with(['questions', 'targets'])->findOrFail($id);
         $userId = Auth::id();
+
+        abort_unless($this->canAccessSurvey($survey), 403, 'Anda tidak memiliki akses untuk mengisi survei ini.');
+
+        $existing = SurveyResponse::where('survey_id', $survey->id)
+            ->where('user_id', $userId)
+            ->exists();
+
+        if ($existing) {
+            return redirect()->route('user.survey.index')->with('warning', 'Anda sudah mengisi survei ini.');
+        }
 
         foreach ($survey->questions as $question) {
             $jawaban = $request->input("jawaban.{$question->id}");
@@ -88,6 +75,30 @@ public function fill($id)
             }
         }
 
+        ActivityLog::record('submit', 'survey', $survey, [], [
+            'judul' => $survey->judul,
+            'user_id' => $userId,
+            'total_questions' => $survey->questions->count(),
+        ]);
+
         return redirect()->route('user.dashboard')->with('success', 'Terima kasih, survei berhasil disimpan!');
+    }
+
+    private function canAccessSurvey(Survey $survey): bool
+    {
+        return $survey->targets
+            ->pluck('target')
+            ->intersect($this->targetsFor(Auth::user()))
+            ->isNotEmpty();
+    }
+
+    private function targetsFor($user): array
+    {
+        return collect([
+            $user->hasRole('dosen') || $user->hasRole('gpm') ? 'Prodi' : null,
+            $user->hasRole('tendik') ? 'Tendik' : null,
+            $user->hasRole('mahasiswa') ? 'Mahasiswa' : null,
+            $user->unit,
+        ])->filter()->unique()->values()->all();
     }
 }

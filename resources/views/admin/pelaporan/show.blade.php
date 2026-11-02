@@ -48,7 +48,7 @@
             <div class="md:col-span-2">
                 <p class="text-gray-500 font-semibold text-sm uppercase mb-1">Bukti Pendukung</p>
                 @if ($pelaporan->bukti_pendukung)
-                    <a href="{{ asset('storage/' . $pelaporan->bukti_pendukung) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition duration-200 ease-in-out" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ route('admin.pelaporan.download', $pelaporan->id) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition duration-200 ease-in-out">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         Lihat Dokumen
                     </a>

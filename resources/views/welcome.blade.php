@@ -4,311 +4,320 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Penjaminan Mutu Internal | STIKes Bogor Husada</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom Tailwind Configuration & Animations */
-        @layer base {
-            html {
-                scroll-behavior: smooth;
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            box-shadow: 0 16px 48px rgba(15, 23, 42, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 18px 54px rgba(2, 6, 23, 0.24);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(255,255,255,0) 42%);
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .glass, .glass-dark {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
             }
-            body {
-                font-family: 'Poppins', sans-serif;
-            }
-            h1, h2, h3, h4, h5, h6 {
-                font-family: 'Montserrat', sans-serif;
-            }
         }
-
-        @keyframes fadeInScaleUp {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseEffect {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-            70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
-        }
-
-        .animate-fadeInScaleUp { animation: fadeInScaleUp 0.8s ease-out forwards; }
-        .animate-slideInUp { animation: slideInUp 0.7s ease-out forwards; }
-        .animate-pulseEffect { animation: pulseEffect 2s infinite cubic-bezier(0.66, 0, 0, 1); }
-
-        /* Custom Swiper pagination styles */
-        .swiper-pagination-bullet { background: #cbd5e1 !important; opacity: 1 !important; width: 10px !important; height: 10px !important; }
-        .swiper-pagination-bullet-active { background: #2563eb !important; width: 25px !important; border-radius: 5px !important; transition: width 0.3s ease !important; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="min-h-screen bg-[#eef6f8] text-slate-800 antialiased">
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-[linear-gradient(115deg,#f8fafc_0%,#e0f2fe_42%,#ecfeff_100%)]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(20,184,166,.26),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(59,130,246,.24),transparent_26%),radial-gradient(circle_at_50%_88%,rgba(244,114,182,.14),transparent_28%)]"></div>
+    </div>
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center animate-fadeInScaleUp">
-            <div class="flex items-center space-x-3">
-                {{-- Gunakan asset() helper untuk logo --}}
-                <img src="{{ asset('path/logo.png') }}" alt="Logo STIKes" class="h-10 w-auto">
-                <div>
-                    <h1 class="text-xl md:text-2xl font-extrabold text-blue-700">UPMI</h1>
-                    <p class="text-xs md:text-sm text-gray-600">STIKes Bogor Husada</p>
-                </div>
+    <header x-data="{ open: false }" class="sticky top-0 z-50 px-4 py-4">
+        <div class="glass mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-5 py-3">
+            <a href="{{ route('home') }}" class="flex items-center gap-3">
+                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 ring-1 ring-white/80">
+                    <img src="{{ asset('path/logo.png') }}" alt="Logo STIKes Bogor Husada" class="h-9 w-9 object-contain">
+                </span>
+                <span>
+                    <span class="block text-lg font-extrabold tracking-wide text-slate-950">UPMI</span>
+                    <span class="block text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">STIKes Bogor Husada</span>
+                </span>
+            </a>
+
+            <nav class="hidden items-center gap-7 text-sm font-semibold text-slate-700 md:flex">
+                <a href="#beranda" class="hover:text-teal-700">Beranda</a>
+                <a href="#tentang" class="hover:text-teal-700">Tentang</a>
+                <a href="#layanan" class="hover:text-teal-700">Layanan</a>
+                <a href="#dokumen" class="hover:text-teal-700">Dokumen</a>
+                <a href="#berita" class="hover:text-teal-700">Berita</a>
+                <a href="#kontak" class="hover:text-teal-700">Kontak</a>
+            </nav>
+
+            <div class="hidden items-center gap-3 md:flex">
+                <a href="{{ route('dokumen.publik.index') }}" class="rounded-full border border-white/80 bg-white/50 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-white">
+                    Dokumen Publik
+                </a>
+                <a href="{{ route('login') }}" class="rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-slate-900/20 hover:bg-teal-700">
+                    Login
+                </a>
             </div>
-            <nav class="hidden md:flex items-center space-x-8 text-lg font-medium">
-                <a href="#beranda" class="text-gray-700 hover:text-blue-600 transition duration-300">Beranda</a>
-                
-                <div x-data="{ open: false }" @click.away="open = false" class="relative">
-                    <button @click="open = !open" class="flex items-center text-gray-700 hover:text-blue-600 transition duration-300 focus:outline-none">
-                        Tentang UPMI
-                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute left-1/2 -translate-x-1/2 mt-3 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
-                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#tentang-profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition duration-300" role="menuitem">Profil</a>
-                            <a href="#tentang-visimisi" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition duration-300" role="menuitem">Visi Misi</a>
-                            <a href="#tentang-struktur" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition duration-300" role="menuitem">Struktur Organisasi</a>
-                        </div>
-                    </div>
-                </div>
 
-                <a href="#berita-terkini" class="text-gray-700 hover:text-blue-600 transition duration-300">Berita</a>
-                <a href="#dokumen" class="text-gray-700 hover:text-blue-600 transition duration-300">Dokumen</a>
-                <a href="#kontak" class="text-gray-700 hover:text-blue-600 transition duration-300">Kontak</a>
+            <button type="button" @click="open = !open" class="rounded-xl bg-white/70 p-2 text-slate-800 ring-1 ring-white/80 md:hidden">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <div x-show="open" x-transition class="glass mx-auto mt-3 max-w-7xl rounded-2xl p-4 md:hidden">
+            <nav class="grid gap-2 text-sm font-semibold text-slate-700">
+                <a @click="open = false" href="#beranda" class="rounded-xl px-3 py-2 hover:bg-white/70">Beranda</a>
+                <a @click="open = false" href="#tentang" class="rounded-xl px-3 py-2 hover:bg-white/70">Tentang</a>
+                <a @click="open = false" href="#layanan" class="rounded-xl px-3 py-2 hover:bg-white/70">Layanan</a>
+                <a @click="open = false" href="#dokumen" class="rounded-xl px-3 py-2 hover:bg-white/70">Dokumen</a>
+                <a @click="open = false" href="#berita" class="rounded-xl px-3 py-2 hover:bg-white/70">Berita</a>
+                <a @click="open = false" href="#kontak" class="rounded-xl px-3 py-2 hover:bg-white/70">Kontak</a>
+                <a href="{{ route('login') }}" class="mt-2 rounded-xl bg-slate-950 px-3 py-3 text-center text-white">Login</a>
             </nav>
         </div>
     </header>
 
-    <section id="beranda" class="bg-gradient-to-br from-blue-100 to-indigo-200 py-24 md:py-32 flex items-center justify-center min-h-[calc(100vh-6rem)] overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-6 text-center z-10">
-            <h2 class="text-4xl md:text-6xl font-extrabold text-blue-900 mb-6 leading-tight animate-slideInUp">
-                Unit Penjaminan Mutu Internal <br class="hidden md:block"><span class="text-indigo-700">STIKes Bogor Husada</span>
-            </h2>
-            <p class="text-gray-700 text-lg md:text-xl max-w-3xl mx-auto mb-10 animate-slideInUp" style="animation-delay: 0.2s;">
-                Mewujudkan Budaya Mutu Akademik dan Non-Akademik yang Unggul dan Berkelanjutan.
-            </p>
-            <a href="#layanan" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 animate-pulseEffect" style="animation-delay: 0.4s;">
-                Pelajari Lebih Lanjut
-            </a>
-        </div>
-        <div class="absolute inset-0 opacity-20">
-
-            <img src="{{ asset('path/logo.png') }}" alt="Background Quality" class="w-full h-full object-cover">
-
-        </div>
-    </section>
-
-    <section id="tentang" class="py-20 md:py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-3xl font-extrabold text-gray-800 mb-12 text-center">Tentang UPMI STIKes Bogor Husada</h3>
-
-            <div id="tentang-profil" class="grid md:grid-cols-2 gap-12 items-center mb-20">
-                <div class="animate-slideInUp">
-                    <h4 class="text-2xl font-extrabold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Profil UPMI</h4>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-4">
-                        Unit Penjaminan Mutu Internal (UPMI) STIKes Bogor Husada memiliki peran vital dalam memastikan terlaksananya Sistem Penjaminan Mutu Internal (SPMI) secara konsisten dan berkelanjutan. Kami berkomitmen untuk meningkatkan kualitas pendidikan, penelitian, dan pengabdian kepada masyarakat. UPMI dibentuk sebagai wujud komitmen institusi terhadap mutu dan akuntabilitas.
-                    </p>
-                    <p class="text-gray-700 text-lg leading-relaxed">
-                        Kami beroperasi berdasarkan prinsip-prinsip transparansi, objektivitas, dan partisipasi seluruh civitas akademika untuk mencapai standar yang telah ditetapkan.
-                    </p>
-                </div>
-                <div class="flex justify-center items-center animate-fadeInScaleUp" style="animation-delay: 0.2s;">
-                    <img src="https://source.unsplash.com/600x400/?profile,team,office" alt="Profil UPMI" class="rounded-xl shadow-xl w-full h-auto object-cover max-h-96">
-                </div>
-            </div>
-
-            <div id="tentang-visimisi" class="grid md:grid-cols-2 gap-12 items-center mb-20">
-                <div class="flex justify-center items-center md:order-2 animate-fadeInScaleUp" style="animation-delay: 0.2s;">
-                    <img src="https://source.unsplash.com/600x400/?vision,mission,goals" alt="Visi Misi UPMI" class="rounded-xl shadow-xl w-full h-auto object-cover max-h-96">
-                </div>
-                <div class="md:order-1 animate-slideInUp">
-                    <h4 class="text-2xl font-extrabold text-gray-800 mb-4 border-l-4 border-indigo-500 pl-4">Visi & Misi UPMI</h4>
-                    <div class="mb-4">
-                        <p class="text-gray-700 font-semibold text-lg mb-2">Visi:</p>
-                        <p class="text-gray-700 text-base leading-relaxed">
-                            “Terwujudnya sebuah Unit penjaminan Mutu yang Berintegritas untuk mencapai visi STIKes Bogor Husada yakni : professional, berkarakter dan berwawasan global tahun 2040”
+    <main>
+        <section id="beranda" class="px-4 pb-16 pt-8 md:pb-24 md:pt-14">
+            <div class="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[1.08fr_.92fr]">
+                <div class="glass shine rounded-[2rem] p-7 md:p-10 lg:p-12">
+                    <div class="relative">
+                        <span class="inline-flex rounded-full border border-teal-200 bg-white/60 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-teal-700">
+                            {{ $hero['subtitle'] }}
+                        </span>
+                        <h1 class="mt-7 max-w-4xl text-4xl font-extrabold leading-tight text-slate-950 md:text-6xl">
+                            {{ $hero['title'] }}
+                        </h1>
+                        <p class="mt-6 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+                            {{ $hero['body'] }}
                         </p>
+                        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                            <a href="{{ $hero['button_url'] ?? route('dokumen.publik.index') }}" class="rounded-full bg-teal-600 px-6 py-3 text-center text-sm font-extrabold text-white shadow-xl shadow-teal-700/20 hover:bg-teal-700">
+                                {{ $hero['button_label'] ?? 'Jelajahi Dokumen' }}
+                            </a>
+                            <a href="#layanan" class="rounded-full border border-white/90 bg-white/55 px-6 py-3 text-center text-sm font-extrabold text-slate-800 hover:bg-white">
+                                Lihat Layanan
+                            </a>
+                        </div>
                     </div>
+                </div>
+
+                <div class="glass-dark shine rounded-[2rem] p-7 text-white md:p-9">
+                    <div class="relative">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-100">Quality Hub</p>
+                                <h2 class="mt-2 text-2xl font-extrabold">UPMI Dashboard</h2>
+                            </div>
+                            <img src="{{ asset('path/logo.png') }}" alt="Logo" class="h-16 w-16 rounded-2xl bg-white/90 p-2">
+                        </div>
+
+                        <div class="mt-8 grid gap-4">
+                            <div class="rounded-2xl border border-white/15 bg-white/10 p-5">
+                                <p class="text-sm text-cyan-100">Fokus utama</p>
+                                <p class="mt-2 text-xl font-bold">Dokumen, AMI, Survey, Pelaporan</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="rounded-2xl border border-white/15 bg-white/10 p-5">
+                                    <p class="text-3xl font-extrabold">PPEPP</p>
+                                    <p class="mt-1 text-sm text-cyan-100">Siklus mutu</p>
+                                </div>
+                                <div class="rounded-2xl border border-white/15 bg-white/10 p-5">
+                                    <p class="text-3xl font-extrabold">2040</p>
+                                    <p class="mt-1 text-sm text-cyan-100">Visi institusi</p>
+                                </div>
+                            </div>
+                            <div class="rounded-2xl bg-white p-5 text-slate-900">
+                                <p class="text-sm font-semibold text-slate-500">Portal akses</p>
+                                <div class="mt-3 flex items-center justify-between gap-4">
+                                    <span class="text-lg font-extrabold">SIM UPMI</span>
+                                    <a href="{{ route('login') }}" class="rounded-full bg-slate-950 px-4 py-2 text-sm font-bold text-white">Masuk</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tentang" class="px-4 py-16">
+            <div class="mx-auto max-w-7xl">
+                <div class="grid gap-6 lg:grid-cols-[.82fr_1.18fr]">
+                    <div class="glass rounded-[1.75rem] p-7 md:p-9">
+                        <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">{{ $about['subtitle'] }}</p>
+                        <h2 class="mt-4 text-3xl font-extrabold text-slate-950 md:text-4xl">{{ $about['title'] }}</h2>
+                    </div>
+                    <div class="glass rounded-[1.75rem] p-7 md:p-9">
+                        <p class="leading-8 text-slate-600">
+                            {{ $about['body'] }}
+                        </p>
+                        <div class="mt-6 grid gap-4 md:grid-cols-3">
+                            <div class="rounded-2xl bg-white/55 p-4 ring-1 ring-white/70">
+                                <p class="font-extrabold text-slate-950">Transparan</p>
+                                <p class="mt-1 text-sm text-slate-600">Data dan dokumen mudah ditelusuri.</p>
+                            </div>
+                            <div class="rounded-2xl bg-white/55 p-4 ring-1 ring-white/70">
+                                <p class="font-extrabold text-slate-950">Terukur</p>
+                                <p class="mt-1 text-sm text-slate-600">Survey dan pelaporan terdokumentasi.</p>
+                            </div>
+                            <div class="rounded-2xl bg-white/55 p-4 ring-1 ring-white/70">
+                                <p class="font-extrabold text-slate-950">Berkelanjutan</p>
+                                <p class="mt-1 text-sm text-slate-600">Mendukung siklus PPEPP.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="layanan" class="px-4 py-16">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-8">
+                    <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Layanan</p>
+                    <h2 class="mt-3 text-3xl font-extrabold text-slate-950 md:text-4xl">Layanan utama UPMI</h2>
+                </div>
+
+                <div class="grid gap-5 md:grid-cols-3">
+                    @foreach ($services as $layanan)
+                        <div class="glass shine rounded-[1.5rem] p-6 transition duration-300 hover:-translate-y-1">
+                            <div class="relative">
+                                @if (! empty($layanan['image_path']))
+                                    <img src="{{ asset('storage/' . $layanan['image_path']) }}" alt="{{ $layanan['title'] }}" class="h-32 w-full rounded-2xl object-cover">
+                                @else
+                                    <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-white">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/>
+                                        </svg>
+                                    </span>
+                                @endif
+                                <h3 class="mt-5 text-xl font-extrabold text-slate-950">{{ $layanan['title'] }}</h3>
+                                @if (! empty($layanan['body']))
+                                    <p class="mt-3 leading-7 text-slate-600">{{ $layanan['body'] }}</p>
+                                @endif
+                                @if (! empty($layanan['button_label']) && ! empty($layanan['button_url']))
+                                    <a href="{{ $layanan['button_url'] }}" class="mt-5 inline-flex font-extrabold text-teal-700 hover:text-slate-950">{{ $layanan['button_label'] }}</a>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+        <section id="dokumen" class="px-4 py-16">
+            <div class="mx-auto max-w-7xl">
+                <div class="glass-dark rounded-[2rem] p-7 text-white md:p-10">
+                    <div class="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+                        <div>
+                            <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-cyan-100">{{ $documentIntro['subtitle'] }}</p>
+                            <h2 class="mt-4 text-3xl font-extrabold md:text-4xl">{{ $documentIntro['title'] }}</h2>
+                            <p class="mt-4 leading-8 text-cyan-50/85">{{ $documentIntro['body'] }}</p>
+                            <a href="{{ $documentIntro['button_url'] ?? route('dokumen.publik.index') }}" class="mt-7 inline-flex rounded-full bg-white px-6 py-3 text-sm font-extrabold text-slate-950 hover:bg-cyan-50">
+                                {{ $documentIntro['button_label'] ?? 'Buka Dokumen Publik' }}
+                            </a>
+                        </div>
+                        <div class="grid gap-4 sm:grid-cols-3">
+                            @foreach ($documents as $dokumen)
+                                <div class="rounded-2xl border border-white/15 bg-white/10 p-5">
+                                    @if (! empty($dokumen['image_path']))
+                                        <img src="{{ asset('storage/' . $dokumen['image_path']) }}" alt="{{ $dokumen['title'] }}" class="h-24 w-full rounded-xl object-cover">
+                                    @else
+                                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
+                                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 3h7l5 5v13H7a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    <p class="mt-5 font-extrabold">{{ $dokumen['title'] }}</p>
+                                    @if (! empty($dokumen['body']))
+                                        <p class="mt-2 text-sm leading-6 text-cyan-50/75">{{ $dokumen['body'] }}</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="berita" class="px-4 py-16">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                     <div>
-                        <p class="text-gray-700 font-semibold text-lg mb-2">Misi:</p>
-                        <ul class="list-disc list-inside text-gray-700 text-base leading-relaxed space-y-2">
-                            <li>Membangun kesadaran setiap unit kerja yang ada di STIKes Bogor Husada akan pentingnya budaya mutu.</li>
-                            <li>Meningkatkan pengetahuan dari setiap unit kerja terkait siklus penjaminan mutu PPEPP (Penetapan, Pelaksanaan, Evaluasi, Pengendalian dan Peningkatan).</li>
-                            <li>Meningkatkan kualitas mutu STIKes Bogor Husada secara berkelanjutan (Continuous Quality Improvement).</li>
-                            <li>Mengkomandoi terkait pelaksanaan Akreditasi sehingga mendapat pengakuan dari lembaga akreditasi.</li>
-                        </ul>
+                        <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Berita</p>
+                        <h2 class="mt-3 text-3xl font-extrabold text-slate-950 md:text-4xl">Kabar terbaru UPMI</h2>
                     </div>
+                    <a href="{{ route('berita.publik.index') }}" class="rounded-full border border-white/90 bg-white/60 px-5 py-3 text-sm font-extrabold text-slate-800 hover:bg-white">
+                        Semua Berita
+                    </a>
                 </div>
-            </div>
 
-            <div id="tentang-struktur" class="mb-20">
-                <h4 class="text-2xl font-extrabold text-gray-800 mb-8 border-l-4 border-purple-500 pl-4 animate-slideInUp">Struktur Organisasi UPMI</h4>
-                <div class="flex justify-center items-center bg-gray-50 p-8 rounded-xl shadow-md animate-fadeInScaleUp" style="animation-delay: 0.2s;">
-                    <img src="https://via.placeholder.com/800x450/E0E7FF/4338CA?text=Struktur+Organisasi+UPMI" alt="Struktur Organisasi UPMI" class="max-w-full h-auto rounded-lg shadow-lg">
-                </div>
-                <p class="text-center text-gray-600 text-sm mt-4">Diagram di atas menunjukkan struktur organisasi UPMI STIKes Bogor Husada.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="layanan" class="py-20 md:py-24 bg-blue-50">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-12 animate-slideInUp">Layanan Utama UPMI</h3>
-            <div class="grid md:grid-cols-3 gap-10">
-                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform duration-300 hover:scale-105 animate-slideInUp">
-                    <svg class="w-16 h-16 mx-auto mb-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h4 class="text-xl font-bold mb-3 text-gray-900">Audit Mutu Internal (AMI)</h4>
-                    <p class="text-gray-600 leading-relaxed">Pelaksanaan audit berkala untuk memastikan kepatuhan terhadap standar mutu yang ditetapkan.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform duration-300 hover:scale-105 animate-slideInUp" style="animation-delay: 0.1s;">
-                    <svg class="w-16 h-16 mx-auto mb-6 text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6zm2 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm0 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm0 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-                    <h4 class="text-xl font-bold mb-3 text-gray-900">Pelaporan SPMI</h4>
-                    <p class="text-gray-600 leading-relaxed">Penyusunan laporan berkala terkait implementasi SPMI di seluruh unit.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg transition-transform duration-300 hover:scale-105 animate-slideInUp" style="animation-delay: 0.2s;">
-                    <svg class="w-16 h-16 mx-auto mb-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm1.414-.586a1 1 0 011.414 0L9 7.086V5a1 1 0 112 0v2.086l2.172-2.172a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414zM10 12a1 1 0 100 2h4a1 1 0 100-2h-4z" clip-rule="evenodd"></path></svg>
-                    <h4 class="text-xl font-bold mb-3 text-gray-900">Manajemen Dokumen Mutu</h4>
-                    <p class="text-gray-600 leading-relaxed">Pengelolaan terpusat dokumen-dokumen terkait mutu internal dan eksternal.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="dokumen" class="py-20 md:py-24 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-6">
-            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 text-center mb-12 animate-slideInUp">Dokumen Mutu Penting</h3>
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide p-8 bg-white rounded-xl shadow-lg text-center flex flex-col items-center justify-center transform transition-transform duration-300 hover:scale-105">
-                        <svg class="w-16 h-16 mb-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
-                        <h4 class="text-2xl font-bold mb-2 text-gray-900">Manual SPMI</h4>
-                        <p class="text-gray-600 mb-4">Pedoman utama Sistem Penjaminan Mutu Internal.</p>
+                <div class="grid gap-6 md:grid-cols-3">
+                    @forelse ($beritas->take(3) as $berita)
+                        <article class="glass overflow-hidden rounded-[1.5rem] transition duration-300 hover:-translate-y-1">
+                            @if ($berita->gambar)
+                                <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="h-52 w-full object-cover">
+                            @else
+                                <div class="flex h-52 items-center justify-center bg-white/35 text-slate-400">
+                                    <svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4-4a2 2 0 012.8 0l1.2 1.2 2-2a2 2 0 012.8 0L20 14M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                </div>
+                            @endif
+                            <div class="p-6">
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">{{ $berita->created_at->format('d M Y') }}</p>
+                                <h3 class="mt-3 text-xl font-extrabold leading-snug text-slate-950">{{ \Illuminate\Support\Str::limit($berita->judul, 62) }}</h3>
+                                <p class="mt-3 leading-7 text-slate-600">{{ \Illuminate\Support\Str::limit(strip_tags($berita->narasi), 120) }}</p>
+                                <a href="{{ route('berita.publik.show', $berita->slug) }}" class="mt-5 inline-flex font-extrabold text-teal-700 hover:text-slate-950">Baca Selengkapnya</a>
+                            </div>
+                        </article>
+                    @empty
+                        <div class="glass rounded-[1.5rem] p-8 text-center md:col-span-3">
+                            <p class="font-semibold text-slate-600">Belum ada berita terbaru yang tersedia.</p>
                         </div>
-                    <div class="swiper-slide p-8 bg-white rounded-xl shadow-lg text-center flex flex-col items-center justify-center transform transition-transform duration-300 hover:scale-105">
-                        <svg class="w-16 h-16 mb-4 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
-                        <h4 class="text-2xl font-bold mb-2 text-gray-900">Standar Mutu</h4>
-                        <p class="text-gray-600 mb-4">Dokumen standar mutu untuk berbagai aspek.</p>
-                        </div>
-                    <div class="swiper-slide p-8 bg-white rounded-xl shadow-lg text-center flex flex-col items-center justify-center transform transition-transform duration-300 hover:scale-105">
-                        <svg class="w-16 h-16 mb-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
-                        <h4 class="text-2xl font-bold mb-2 text-gray-900">Laporan AMI</h4>
-                        <p class="text-gray-600 mb-4">Arsip Laporan Audit Mutu Internal tahunan.</p>
-                        </div>
+                    @endforelse
                 </div>
-                <div class="swiper-pagination mt-8"></div>
             </div>
-            <div class="text-center mt-12">
-                <a href="/dokumen-publik" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
-                    Lihat Semua Dokumen Publik
-                </a>
+        </section>
+
+        <section id="kontak" class="px-4 py-16">
+            <div class="glass mx-auto max-w-5xl rounded-[2rem] p-8 text-center md:p-12">
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">{{ $contact['subtitle'] }}</p>
+                <h2 class="mt-4 text-3xl font-extrabold text-slate-950 md:text-5xl">{{ $contact['title'] }}</h2>
+                <p class="mx-auto mt-5 max-w-2xl leading-8 text-slate-600">{{ $contact['body'] }}</p>
+                <a href="{{ $contact['button_url'] ?? 'mailto:upmi@stikesbogorhusada.ac.id' }}" class="mt-8 inline-flex rounded-full bg-slate-950 px-7 py-3 text-sm font-extrabold text-white hover:bg-teal-700">{{ $contact['button_label'] ?? 'Hubungi UPMI' }}</a>
+                <p class="mt-6 text-sm text-slate-500">Jl. Sholeh Iskandar No.4, Kedungbadak, Tanah Sereal, Kota Bogor</p>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <section id="berita-terkini" class="py-20 md:py-24 bg-blue-50"> {{-- Ubah warna background --}}
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-12 animate-slideInUp">Berita & Pengumuman Terbaru</h3> {{-- Ubah judul --}}
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> {{-- Ubah gap --}}
-                @forelse($beritas->take(3) as $berita)
-                <div class="bg-white p-6 rounded-xl shadow-lg overflow-hidden border border-gray-200 transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl flex flex-col"> {{-- Styling kartu --}}
-                    @if($berita->gambar)
-                        <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" 
-                             class="w-full h-48 object-cover object-center rounded-lg mb-4"> {{-- Styling gambar --}}
-                    @else
-                        <div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 rounded-lg mb-4"> {{-- Placeholder gambar --}}
-                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
-                    @endif
-                    <h4 class="text-xl font-bold mb-2 text-gray-900 leading-tight"> {{-- Styling judul, added leading-tight --}}
-                        {{ \Illuminate\Support\Str::limit($berita->judul, 50, '...') }} {{-- Batasi judul lebih ketat --}}
-                    </h4>
-                    <p class="text-gray-700 leading-relaxed text-base flex-grow"> {{-- Styling narasi, added flex-grow --}}
-                        {{ \Illuminate\Support\Str::limit(strip_tags($berita->narasi), 100, '...') }} {{-- Batasi narasi lebih ketat --}}
-                    </p>
-                    <div class="mt-4 pt-4 border-t border-gray-100"> {{-- Added separator and margin-top --}}
-                        <a href="{{ route('berita.publik.show', $berita->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"> {{-- Styling link --}}
-                            Baca Selengkapnya
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </a>
-                    </div>
-                </div>
-                @empty
-                    <div class="col-span-full bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200">
-                        <p class="text-gray-600 text-lg italic">Belum ada berita atau pengumuman terbaru yang tersedia.</p>
-                        <p class="text-gray-500 mt-2">Nantikan update dari kami!</p>
-                    </div>
-                @endforelse
-            </div>
-
-            <div class="mt-12 text-center"> {{-- Ubah margin-top dan center --}}
-                <a href="{{ route('berita.publik.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1"> {{-- Styling tombol --}}
-                    Lihat Semua Berita & Pengumuman
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="kontak" class="bg-gradient-to-br from-indigo-600 to-blue-700 py-20 text-white text-center">
-        <div class="max-w-4xl mx-auto px-6">
-            <h3 class="text-4xl md:text-5xl font-extrabold mb-6 animate-slideInUp">Butuh Bantuan atau Informasi Lebih Lanjut?</h3>
-            <p class="text-xl opacity-90 mb-10 animate-slideInUp" style="animation-delay: 0.2s;">
-                Tim Unit Penjaminan Mutu Internal STIKes Bogor Husada siap melayani Anda.
-            </p>
-            <a href="mailto:upmi@stikesbogorhusada.ac.id" class="inline-block bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 rounded-full font-bold text-xl shadow-2xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 animate-pulseEffect" style="animation-delay: 0.4s;">
-                Hubungi Kami
-            </a>
-            <p class="mt-8 text-lg opacity-80">
-                Alamat: Jl. Sholeh Iskandar No.4, Kedungbadak, Kec. Tanah Sereal, Kota Bogor, Jawa Barat 16164
-            </p>
-        </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-7xl mx-auto px-6 text-center text-sm">
-            <p>&copy; {{ date('Y') }} Unit Penjaminan Mutu Internal STIKes Bogor Husada. Hak Cipta Dilindungi.</p>
-            <p class="mt-2 text-gray-400">Dikelola oleh Tim ICT.</p>
+    <footer class="px-4 pb-6">
+        <div class="glass-dark mx-auto flex max-w-7xl flex-col justify-between gap-3 rounded-2xl px-6 py-5 text-sm text-cyan-50/80 md:flex-row md:items-center">
+            <p>&copy; {{ date('Y') }} UPMI STIKes Bogor Husada. Hak Cipta Dilindungi.</p>
+            <p>Dikelola oleh Tim ICT.</p>
         </div>
     </footer>
-
-    <script>
-        // Swiper Initialization for Dokumen Penting Section
-        new Swiper(".mySwiper", {
-            loop: true,
-            slidesPerView: 1,
-            spaceBetween: 30,
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                },
-            },
-        });
-
-        // Smooth scroll for dropdown links
-        document.querySelectorAll('a[href^="#tentang-"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close the dropdown after clicking a link
-                const dropdown = this.closest('[x-data="{ open: false }"]');
-                if (dropdown) {
-                    dropdown.__x.$data.open = false;
-                }
-            });
-        });
-    </script>
 </body>
 </html>

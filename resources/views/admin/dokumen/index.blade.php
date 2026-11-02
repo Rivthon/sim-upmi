@@ -3,107 +3,147 @@
 @section('title', 'Manajemen Dokumen Mutu')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 sm:mb-0">Manajemen Dokumen Mutu</h1>
-        <a href="{{ route('admin.dokumen.create') }}"
-           class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 16v-4m0 0l4 4m-4-4l-4 4m-1-4h1a2 2 0 012 2v1a2 2 0 01-2 2H7a2 2 0 01-2-2v-1a2 2 0 012-2h1"></path></svg>
-            Upload Dokumen Baru
-        </a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 mb-6 rounded-md shadow-sm" role="alert">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <p class="font-medium">{{ session('success') }}</p>
+<div class="mx-auto max-w-7xl">
+    <section class="admin-glass overflow-hidden rounded-[1.75rem] p-6 md:p-8">
+        <div class="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Dokumen Mutu</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-slate-950 md:text-4xl">Manajemen Dokumen Mutu</h2>
+                <p class="mt-2 max-w-2xl leading-7 text-slate-600">Kelola dokumen mutu, versi, revisi, publikasi, dan approval sebelum dokumen tampil ke publik.</p>
             </div>
+            <a href="{{ route('admin.dokumen.create') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-slate-900/20 transition hover:bg-teal-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"/>
+                </svg>
+                Upload Dokumen
+            </a>
+        </div>
+    </section>
+
+    @if (session('success'))
+        <div class="mt-5 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 font-semibold text-green-700">
+            {{ session('success') }}
         </div>
     @endif
 
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+    <section class="mt-6 grid gap-5 md:grid-cols-4">
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Total Dokumen</p>
+            <p class="mt-2 text-3xl font-extrabold text-slate-950">{{ $dokumens->count() }}</p>
+        </div>
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Approved</p>
+            <p class="mt-2 text-3xl font-extrabold text-green-700">{{ $dokumens->where('approval_status', 'approved')->count() }}</p>
+        </div>
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Pending</p>
+            <p class="mt-2 text-3xl font-extrabold text-amber-600">{{ $dokumens->where('approval_status', 'pending')->count() }}</p>
+        </div>
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Publik</p>
+            <p class="mt-2 text-3xl font-extrabold text-teal-700">{{ $dokumens->where('tipe', 'Publik')->count() }}</p>
+        </div>
+    </section>
+
+    <section class="admin-glass mt-6 overflow-visible rounded-[1.5rem]">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-white/70">
+                <thead class="bg-white/45">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kode</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sub Kategori</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Versi</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Revisi</th>
-                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Dokumen</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Kategori</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Versi</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Approval</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Revisi</th>
+                        <th class="px-6 py-4 text-center text-xs font-extrabold uppercase tracking-wide text-slate-500">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
-                    @forelse($dokumens as $dokumen)
-                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('admin.dokumen.show', $dokumen->id) }}" class="text-blue-600 hover:text-blue-800 hover:underline transition duration-200">
-                                    {{ $dokumen->kode_dokumen }}
-                                </a>
+                <tbody class="divide-y divide-white/60">
+                    @forelse ($dokumens as $dokumen)
+                        @php
+                            $approvalClass = match ($dokumen->approval_status ?? 'pending') {
+                                'approved' => 'bg-green-100 text-green-800',
+                                'rejected' => 'bg-red-100 text-red-800',
+                                default => 'bg-amber-100 text-amber-800',
+                            };
+                            $statusClass = match ($dokumen->status) {
+                                'Aktif' => 'bg-teal-100 text-teal-800',
+                                'Revisi' => 'bg-blue-100 text-blue-800',
+                                default => 'bg-slate-200 text-slate-700',
+                            };
+                        @endphp
+                        <tr class="transition hover:bg-white/40">
+                            <td class="px-6 py-4">
+                                <div class="min-w-[260px]">
+                                    <a href="{{ route('admin.dokumen.show', $dokumen) }}" class="font-extrabold text-slate-950 hover:text-teal-700">
+                                        {{ $dokumen->judul }}
+                                    </a>
+                                    <p class="mt-1 text-xs font-bold uppercase tracking-wide text-teal-700">{{ $dokumen->kode_dokumen }}</p>
+                                    <p class="mt-1 text-sm text-slate-500">{{ $dokumen->tanggal_terbit?->format('d M Y') ?? '-' }}</p>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{{ $dokumen->judul }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $dokumen->kategori->nama ?? '-' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $dokumen->subKategori->nama ?? '-' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $dokumen->versi }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {{ $dokumen->tanggal_terbit ? \Carbon\Carbon::parse($dokumen->tanggal_terbit)->format('d F Y') : '-' }}
+                            <td class="px-6 py-4">
+                                <p class="whitespace-nowrap text-sm font-bold text-slate-700">{{ $dokumen->kategori->nama ?? '-' }}</p>
+                                <p class="mt-1 whitespace-nowrap text-sm text-slate-500">{{ $dokumen->subKategori->nama ?? '-' }}</p>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                @if($dokumen->revisiDari)
-                                    <a href="{{ route('admin.dokumen.show', $dokumen->revisiDari->id) }}" class="text-blue-500 hover:underline">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700">{{ $dokumen->versi }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <span class="w-fit rounded-full px-3 py-1 text-xs font-bold {{ $statusClass }}">{{ $dokumen->status }}</span>
+                                    <span class="w-fit rounded-full bg-white/70 px-3 py-1 text-xs font-bold text-slate-600 ring-1 ring-white">{{ $dokumen->tipe }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="rounded-full px-3 py-1 text-xs font-bold {{ $approvalClass }}">{{ ucfirst($dokumen->approval_status ?? 'pending') }}</span>
+                                @if ($dokumen->approver)
+                                    <p class="mt-2 text-xs text-slate-500">{{ $dokumen->approver->name }}</p>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                @if ($dokumen->revisiDari)
+                                    <a href="{{ route('admin.dokumen.show', $dokumen->revisiDari) }}" class="font-bold text-teal-700 hover:text-slate-950">
                                         {{ $dokumen->revisiDari->kode_dokumen }}
                                     </a>
                                 @else
-                                    -
+                                    <span class="text-slate-400">-</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                {{-- Dropdown Aksi --}}
-                                <div x-data="{ open: false }" @click.away="open = false" class="relative inline-block text-left">
-                                    <button @click="open = !open" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200" id="options-menu-{{ $dokumen->id }}" aria-haspopup="true" :aria-expanded="open">
+                            <td class="px-6 py-4">
+                                <div x-data="{ open: false }" class="relative flex justify-center" @click.away="open = false">
+                                    <button type="button" @click="open = !open" class="inline-flex items-center gap-2 rounded-xl bg-white/75 px-4 py-2 text-sm font-bold text-slate-700 ring-1 ring-white transition hover:bg-white">
                                         Aksi
-                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        <svg class="h-4 w-4 transition" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </button>
-
-                                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{ $dokumen->id }}">
-                                        <div class="py-1">
-                                            <a href="{{ route('admin.dokumen.edit', $dokumen->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition duration-200" role="menuitem">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                                Edit
-                                            </a>
-                                            <a href="{{ route('admin.dokumen.create', ['revisi' => $dokumen->id]) }}" class="flex items-center px-4 py-2 text-sm text-orange-600 hover:bg-gray-100 hover:text-orange-800 transition duration-200" role="menuitem">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.586 2.586A2 2 0 0118 4v2.586a2 2 0 01-.586 1.414l-8.586 8.586a2 2 0 01-2.828 0L3.414 14.586a2 2 0 010-2.828L12 3.414A2 2 0 0113.414 3h2.172zM12 7a1 1 0 10-2 0 1 1 0 002 0z" clip-rule="evenodd"></path></svg>
-                                                Revisi
-                                            </a>
-                                            <form action="{{ route('admin.dokumen.destroy', $dokumen->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini? Aksi ini tidak dapat dibatalkan.')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 hover:text-red-800 transition duration-200" role="menuitem">
-                                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </div>
+                                    <div x-show="open" x-cloak x-transition class="absolute right-0 top-11 z-20 w-48 rounded-2xl border border-white/80 bg-white p-2 text-left shadow-2xl shadow-slate-900/15">
+                                        <a href="{{ route('admin.dokumen.show', $dokumen) }}" class="block rounded-xl px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">Detail</a>
+                                        <a href="{{ route('admin.dokumen.edit', $dokumen) }}" class="block rounded-xl px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">Edit</a>
+                                        <a href="{{ route('admin.dokumen.create', ['revisi' => $dokumen->id]) }}" class="block rounded-xl px-4 py-2 text-sm font-bold text-orange-600 hover:bg-orange-50">Buat Revisi</a>
+                                        <form action="{{ route('admin.dokumen.destroy', $dokumen) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="block w-full rounded-xl px-4 py-2 text-left text-sm font-bold text-red-600 hover:bg-red-50">Hapus</button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-6 py-8 text-center text-gray-500 text-lg">Belum ada dokumen yang diunggah.</td>
+                            <td colspan="7" class="px-6 py-12 text-center">
+                                <div class="mx-auto max-w-md">
+                                    <p class="text-lg font-extrabold text-slate-800">Belum ada dokumen mutu.</p>
+                                    <p class="mt-2 text-sm leading-6 text-slate-500">Mulai unggah dokumen standar, manual, formulir, atau arsip mutu.</p>
+                                    <a href="{{ route('admin.dokumen.create') }}" class="mt-5 inline-flex rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white hover:bg-teal-700">Upload Dokumen</a>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-    </div>
+    </section>
 </div>
 @endsection

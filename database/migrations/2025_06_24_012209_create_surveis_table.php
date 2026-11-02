@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('surveis', function (Blueprint $table) {
-    $table->id();
-    $table->string('judul');
-    $table->text('deskripsi')->nullable();
-    $table->enum('target', ['Prodi', 'Tendik', 'Mahasiswa']); // bisa dikembangkan ke multiple target nanti
-    $table->boolean('is_aktif')->default(false);
-    $table->timestamps();
-});
-
+        Schema::create('surveys', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->text('deskripsi')->nullable();
+            $table->json('target')->nullable();
+            $table->boolean('is_aktif')->default(false);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,6 +26,6 @@ Schema::create('surveis', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('surveis');
+        Schema::dropIfExists('surveys');
     }
 };

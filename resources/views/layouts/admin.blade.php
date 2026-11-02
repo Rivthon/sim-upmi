@@ -3,157 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIM UPMI | Dashboard Admin</title>
+    <title>@yield('title', 'SIM UPMI | Admin')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
     <style>
-        /* Optional: Custom scrollbar styling for a cleaner look */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none !important; }
+        .admin-glass {
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; /* gray-400 */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0; /* gray-500 */
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(226, 232, 240, .65); }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
     </style>
-<link rel="stylesheet" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
-
-<script src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 </head>
-<body class="bg-gray-100 font-sans antialiased">
-
-{{-- Main Layout Container --}}
-<div x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="flex min-h-screen bg-gray-100">
-
-    {{-- Sidebar (Desktop: static, Mobile: fixed overlay) --}}
-    <div x-cloak
-         :class="{ '-translate-x-full': !sidebarOpen && window.innerWidth < 768 }"
-         class="fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-64 flex flex-col z-30
-                transform transition-transform duration-300 ease-in-out
-                md:static md:translate-x-0 md:shadow-none"> {{-- md:shadow-none dihapus dari sini, akan ditangani oleh komponen sidebar sendiri --}}
-        @include('layouts.sidebar')
+<body class="bg-[#eef6f8] text-slate-800 antialiased">
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-[linear-gradient(115deg,#f8fafc_0%,#e0f2fe_42%,#ecfeff_100%)]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(20,184,166,.18),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(59,130,246,.18),transparent_26%),radial-gradient(circle_at_50%_88%,rgba(244,114,182,.10),transparent_28%)]"></div>
     </div>
 
-    {{-- Overlay for mobile sidebar --}}
-    <div x-cloak
-         x-show="sidebarOpen && window.innerWidth < 768"
-         @click="sidebarOpen = false"
-         class="fixed inset-0 bg-black opacity-50 z-20 transition-opacity duration-300 ease-in-out"></div>
+    <div x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="flex min-h-screen">
+        <aside x-cloak
+               :class="{ '-translate-x-full': !sidebarOpen && window.innerWidth < 768 }"
+               class="fixed inset-y-0 left-0 z-30 w-72 transform border-r border-white/70 bg-slate-950 text-white shadow-2xl shadow-slate-900/20 transition-transform duration-300 ease-in-out md:static md:translate-x-0">
+            @include('layouts.sidebar')
+        </aside>
 
-    {{-- Main Content Area --}}
-    <div class="flex-1 flex flex-col overflow-hidden"> {{-- Hapus ml-64/ml-0 dari sini --}}
-        <header class="bg-white shadow-sm px-6 py-4 flex items-center justify-between border-b border-gray-200 z-10">
-            {{-- Tombol Toggle Sidebar --}}
-            <div class="flex items-center">
-                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1 transition-all duration-200 hover:bg-gray-100 mr-4">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path x-show="!sidebarOpen" d="M4 6h16M4 12h16M4 18h16"/>
-                        <path x-show="sidebarOpen" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
-            </div>
+        <div x-cloak
+             x-show="sidebarOpen && window.innerWidth < 768"
+             @click="sidebarOpen = false"
+             class="fixed inset-0 z-20 bg-slate-950/50 backdrop-blur-sm md:hidden"></div>
 
-            {{-- User Info & Dropdown --}}
-            <div class="relative" x-data="{ dropdownOpen: false }">
-                <div class="flex items-center space-x-3 cursor-pointer" @click="dropdownOpen = !dropdownOpen">
-                    <span class="text-md font-medium text-gray-700 hidden sm:block">{{ Auth::user()->name ?? 'Pengguna' }}</span>
-                    <img class="h-9 w-9 rounded-full object-cover border-2 border-blue-400" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'P A') }}&background=3182CE&color=ffffff&size=128" alt="User Avatar">
-                    <svg class="w-4 h-4 text-gray-500 transform transition-transform" :class="{ 'rotate-180': dropdownOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-
-                {{-- Dropdown Menu --}}
-                <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                    <a href="route('profile.edit')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                            Keluar
+        <div class="flex min-w-0 flex-1 flex-col">
+            <header class="sticky top-0 z-10 px-4 py-4 md:px-6">
+                <div class="admin-glass flex items-center justify-between rounded-2xl px-4 py-3">
+                    <div class="flex min-w-0 items-center gap-3">
+                        <button @click="sidebarOpen = !sidebarOpen" class="rounded-xl bg-white/70 p-2 text-slate-700 ring-1 ring-white/80 transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path x-show="!sidebarOpen" stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"/>
+                                <path x-show="sidebarOpen" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
                         </button>
-                    </form>
+                        <div class="min-w-0">
+                            <p class="text-xs font-extrabold uppercase tracking-[0.18em] text-teal-700">Admin Panel</p>
+                            <h1 class="truncate text-xl font-extrabold text-slate-950 md:text-2xl">@yield('title', 'Dashboard Admin')</h1>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        @php($unreadNotifications = \App\Models\AppNotification::where('user_id', Auth::id())->whereNull('read_at')->count())
+                        <a href="{{ route('admin.notifications.index') }}" class="relative rounded-2xl bg-white/65 p-3 text-slate-700 ring-1 ring-white/80 transition hover:bg-white">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m2 0a2 2 0 104 0"/>
+                            </svg>
+                            @if ($unreadNotifications > 0)
+                                <span class="absolute -right-1 -top-1 rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-bold text-white">{{ $unreadNotifications }}</span>
+                            @endif
+                        </a>
+
+                    <div class="relative" x-data="{ dropdownOpen: false }">
+                        <button type="button" class="flex items-center gap-3 rounded-2xl bg-white/65 px-3 py-2 ring-1 ring-white/80 transition hover:bg-white" @click="dropdownOpen = !dropdownOpen">
+                            <span class="hidden text-sm font-bold text-slate-700 sm:block">{{ Auth::user()->name ?? 'Pengguna' }}</span>
+                            <img class="h-10 w-10 rounded-2xl object-cover ring-2 ring-teal-100" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'P A') }}&background=0f766e&color=ffffff&size=128" alt="User Avatar">
+                            <svg class="h-4 w-4 text-slate-500 transition" :class="{ 'rotate-180': dropdownOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <div x-show="dropdownOpen" x-cloak @click.away="dropdownOpen = false" x-transition class="admin-glass absolute right-0 mt-3 w-52 rounded-2xl p-2">
+                            <a href="{{ route('admin.profile.edit') }}" class="block rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white/75">Profil</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="block w-full rounded-xl px-4 py-2.5 text-left text-sm font-semibold text-red-600 hover:bg-red-50">
+                                    Keluar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <main class="flex-1 p-6 bg-gray-100 overflow-y-auto">
-            @yield('content')
-        </main>
+            <main class="flex-1 px-4 pb-8 md:px-6">
+                @yield('content')
+            </main>
 
-        {{-- Footer --}}
-        <footer class="bg-white border-t border-gray-200 p-4 text-center text-gray-600 text-sm shadow-inner">
-            &copy; 2025 SIM UPMI. All rights reserved.
-        </footer>
+            <footer class="px-4 pb-5 md:px-6">
+                <div class="admin-glass rounded-2xl px-5 py-4 text-center text-sm font-medium text-slate-500">
+                    &copy; {{ date('Y') }} SIM UPMI. All rights reserved.
+                </div>
+            </footer>
+        </div>
     </div>
-</div>
 
-<script>
-    // Adjust sidebar state on resize
-    window.addEventListener('resize', () => {
-        const sidebarState = document.querySelector('[x-data]').__x.$data.sidebarOpen;
-        if (window.innerWidth >= 768) {
-            if (!sidebarState) {
-                document.querySelector('[x-data]').__x.$data.sidebarOpen = true; // Force open on desktop if closed
-            }
-        } else {
-            // No automatic change on mobile resize, user needs to manually close it
-            // or if desktop was shrunk, it will become fixed and closed by default
+    <script src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const narasiEditor = document.querySelector('#narasi');
+        if (narasiEditor && window.ClassicEditor) {
+            ClassicEditor.create(narasiEditor).catch(error => console.error(error));
         }
-    });
-
-    // Ensure initial state is correct on load for mobile
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.innerWidth < 768) {
-            document.querySelector('[x-data]').__x.$data.sidebarOpen = false; // Ensure closed on mobile load
-        }
-    });
-</script>
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const unitSelect = document.getElementById('unit');
-    const subUnitWrapper = document.getElementById('sub-unit-wrapper');
-
-    console.log("Script loaded");
-
-    if (!unitSelect) {
-        console.error("Element #unit not found");
-        return;
-    }
-
-    unitSelect.addEventListener('change', function () {
-        console.log("Selected:", this.value);
-        if (this.value === 'Tendik') {
-            subUnitWrapper.classList.remove('hidden');
-        } else {
-            subUnitWrapper.classList.add('hidden');
-            document.getElementById('sub_unit').value = '';
-        }
-    });
-
-    // Trigger on load
-    if (unitSelect.value === 'Tendik') {
-        subUnitWrapper.classList.remove('hidden');
-    }
-});
-</script>
-@endpush
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-<script>
-    ClassicEditor
-        .create( document.querySelector( '#narasi' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </script>
     @stack('scripts')
 </body>
 </html>

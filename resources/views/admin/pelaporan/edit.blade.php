@@ -136,7 +136,7 @@
     @if($pelaporan->bukti_pendukung)
         <p class="mb-2 text-sm text-gray-600">
             <strong>File saat ini:</strong> 
-            <a href="{{ asset('storage/' . $pelaporan->bukti_pendukung) }}" target="_blank" class="text-blue-600 underline">
+            <a href="{{ route('admin.pelaporan.download', $pelaporan->id) }}" class="text-blue-600 underline">
                 {{ basename($pelaporan->bukti_pendukung) }}
             </a>
         </p>

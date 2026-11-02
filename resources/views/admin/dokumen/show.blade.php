@@ -63,6 +63,26 @@
                         {{ $dokumen->tipe }}
                     </span>
                 </div>
+                <div>
+                    <p class="text-gray-500 font-semibold text-sm uppercase mb-1">Approval</p>
+                    @php
+                        $approvalClass = match ($dokumen->approval_status ?? 'pending') {
+                            'approved' => 'bg-green-100 text-green-800',
+                            'rejected' => 'bg-red-100 text-red-800',
+                            default => 'bg-amber-100 text-amber-800',
+                        };
+                    @endphp
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-base font-semibold leading-tight {{ $approvalClass }}">
+                        {{ ucfirst($dokumen->approval_status ?? 'pending') }}
+                    </span>
+                    @if ($dokumen->approver)
+                        <p class="mt-2 text-sm text-gray-500">Oleh {{ $dokumen->approver->name }} pada {{ $dokumen->approved_at?->format('d M Y H:i') }}</p>
+                    @endif
+                </div>
+                <div>
+                    <p class="text-gray-500 font-semibold text-sm uppercase mb-1">Catatan Approval</p>
+                    <p class="text-gray-900 text-lg">{{ $dokumen->approval_note ?: '-' }}</p>
+                </div>
                 
                 {{-- Baris 5 (Diunggah Oleh & Revisi Dari) --}}
                 <div>
@@ -128,11 +148,48 @@
                 </div>
             @endif
 
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-emerald-500 pl-4">Approval Dokumen</h3>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <form action="{{ route('admin.dokumen.approve', $dokumen) }}" method="POST" class="rounded-xl border border-green-200 bg-green-50 p-4">
+                        @csrf
+                        <label class="block text-sm font-semibold text-green-900 mb-2">Catatan persetujuan</label>
+                        <textarea name="approval_note" rows="3" class="w-full rounded-lg border-green-200 focus:border-green-500 focus:ring-green-500">{{ old('approval_note') }}</textarea>
+                        <button type="submit" class="mt-3 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700">Approve</button>
+                    </form>
+                    <form action="{{ route('admin.dokumen.reject', $dokumen) }}" method="POST" class="rounded-xl border border-red-200 bg-red-50 p-4">
+                        @csrf
+                        <label class="block text-sm font-semibold text-red-900 mb-2">Alasan penolakan</label>
+                        <textarea name="approval_note" rows="3" required class="w-full rounded-lg border-red-200 focus:border-red-500 focus:ring-red-500">{{ old('approval_note') }}</textarea>
+                        <button type="submit" class="mt-3 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700">Reject</button>
+                    </form>
+                </div>
+            </div>
+
+            @if ($dokumen->versions->count() > 0)
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-teal-500 pl-4">Versioning Dokumen</h3>
+                    <div class="space-y-3">
+                        @foreach ($dokumen->versions as $version)
+                            <div class="rounded-xl bg-gray-50 border border-gray-200 p-4">
+                                <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                                    <div>
+                                        <p class="font-bold text-gray-900">Versi {{ $version->version_label }}</p>
+                                        <p class="text-sm text-gray-500">{{ $version->created_at->format('d M Y H:i') }} oleh {{ $version->creator->name ?? '-' }}</p>
+                                    </div>
+                                    <span class="text-xs font-semibold text-gray-500">{{ basename($version->file_path ?? '-') }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             {{-- File Dokumen --}}
             <div class="mt-8 pt-6 border-t-2 border-blue-500">
                 <p class="text-gray-500 font-semibold text-sm uppercase mb-3">File Dokumen</p>
                 @if ($dokumen->file_path)
-                    <a href="{{ asset('storage/' . $dokumen->file_path) }}" target="_blank" rel="noopener noreferrer"
+                    <a href="{{ route('admin.dokumen.download', $dokumen->id) }}"
                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
                         <svg class="w-5 h-5 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Lihat / Unduh File (PDF)

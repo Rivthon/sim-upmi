@@ -3,75 +3,106 @@
 @section('title', 'Daftar Berita')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 sm:mb-0">Daftar Berita & Pengumuman</h1>
-        <a href="{{ route('admin.berita.create') }}"
-           class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-            Tambah Berita Baru
-        </a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 mb-6 rounded-md shadow-sm" role="alert">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <p class="font-medium">{{ session('success') }}</p>
+<div class="mx-auto max-w-7xl">
+    <section class="admin-glass overflow-hidden rounded-[1.75rem] p-6 md:p-8">
+        <div class="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-teal-700">Website</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-slate-950 md:text-4xl">Berita & Pengumuman</h2>
+                <p class="mt-2 max-w-2xl leading-7 text-slate-600">Kelola publikasi berita, informasi kegiatan, dan pengumuman yang tampil di halaman depan.</p>
             </div>
+            <a href="{{ route('admin.berita.create') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-slate-900/20 transition hover:bg-teal-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"/>
+                </svg>
+                Tambah Berita
+            </a>
+        </div>
+    </section>
+
+    @if (session('success'))
+        <div class="mt-5 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 font-semibold text-green-700">
+            {{ session('success') }}
         </div>
     @endif
 
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+    <section class="mt-6 grid gap-5 md:grid-cols-3">
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Total Berita</p>
+            <p class="mt-2 text-3xl font-extrabold text-slate-950">{{ $beritas->count() }}</p>
+        </div>
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Dengan Gambar</p>
+            <p class="mt-2 text-3xl font-extrabold text-teal-700">{{ $beritas->whereNotNull('gambar')->count() }}</p>
+        </div>
+        <div class="admin-glass rounded-[1.5rem] p-5">
+            <p class="text-sm font-bold text-slate-500">Terbaru</p>
+            <p class="mt-2 text-lg font-extrabold text-slate-950">{{ $beritas->first()?->created_at?->format('d M Y') ?? '-' }}</p>
+        </div>
+    </section>
+
+    <section class="admin-glass mt-6 overflow-hidden rounded-[1.5rem]">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-white/70">
+                <thead class="bg-white/45">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Narasi Singkat</th>
-                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Gambar</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal Terbit</th>
-                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Berita</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Ringkasan</th>
+                        <th class="px-6 py-4 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500">Tanggal</th>
+                        <th class="px-6 py-4 text-center text-xs font-extrabold uppercase tracking-wide text-slate-500">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
-                    @forelse($beritas as $berita)
-                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                            <td class="px-6 py-4 text-sm font-medium text-gray-800 max-w-xs truncate">{{ $berita->judul }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">{!! Str::limit(strip_tags($berita->narasi), 50) !!}</td> {{-- Disesuaikan menjadi 50 karakter --}}
-                            <td class="px-6 py-4 text-center">
-                                @if($berita->gambar)
-                                    <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="w-10 h-20 object-cover rounded-lg shadow-sm mx-auto">
-                                @else
-                                    <span class="text-xs text-gray-500">Tidak ada gambar</span>
-                                @endif
+                <tbody class="divide-y divide-white/60">
+                    @forelse ($beritas as $berita)
+                        <tr class="transition hover:bg-white/40">
+                            <td class="px-6 py-4">
+                                <div class="flex min-w-[280px] items-center gap-4">
+                                    @if ($berita->gambar)
+                                        <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="h-16 w-20 rounded-2xl object-cover shadow-sm ring-1 ring-white/80">
+                                    @else
+                                        <span class="flex h-16 w-20 items-center justify-center rounded-2xl bg-white/60 text-slate-400 ring-1 ring-white/80">
+                                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4-4a2 2 0 012.8 0l1.2 1.2 2-2a2 2 0 012.8 0L20 14M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
+                                            </svg>
+                                        </span>
+                                    @endif
+                                    <div class="min-w-0">
+                                        <p class="truncate text-base font-extrabold text-slate-950">{{ $berita->judul }}</p>
+                                        <p class="mt-1 truncate text-xs font-bold uppercase tracking-wide text-teal-700">{{ $berita->slug ?? 'artikel' }}</p>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $berita->created_at->format('d F Y') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-3">
-                                <a href="{{ route('admin.berita.edit', $berita->id) }}" class="text-blue-600 hover:text-blue-800 hover:underline transition duration-200">
-                                    <svg class="inline-block w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                    Edit
-                                </a>
-                                <form action="{{ route('admin.berita.destroy', $berita->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini? Tindakan ini tidak bisa dibatalkan.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800 hover:underline transition duration-200">
-                                        <svg class="inline-block w-4 h-4 mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                        Hapus
-                                    </button>
-                                </form>
+                            <td class="px-6 py-4">
+                                <p class="max-w-md text-sm leading-6 text-slate-600">{{ Str::limit(strip_tags($berita->narasi), 120) }}</p>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-600">
+                                {{ $berita->created_at->format('d M Y') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center gap-2">
+                                    <a href="{{ route('admin.berita.edit', $berita) }}" class="rounded-xl bg-white/75 px-4 py-2 text-sm font-bold text-slate-700 ring-1 ring-white hover:bg-white">Edit</a>
+                                    <form action="{{ route('admin.berita.destroy', $berita) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="rounded-xl bg-red-50 px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-100">Hapus</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-8 text-center text-gray-500 text-lg">Belum ada berita atau pengumuman yang tersedia.</td>
+                            <td colspan="4" class="px-6 py-12 text-center">
+                                <div class="mx-auto max-w-md">
+                                    <p class="text-lg font-extrabold text-slate-800">Belum ada berita.</p>
+                                    <p class="mt-2 text-sm leading-6 text-slate-500">Mulai tambahkan berita atau pengumuman untuk ditampilkan di halaman publik.</p>
+                                    <a href="{{ route('admin.berita.create') }}" class="mt-5 inline-flex rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white hover:bg-teal-700">Tambah Berita</a>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-    </div>
+    </section>
 </div>
 @endsection

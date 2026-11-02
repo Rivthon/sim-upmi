@@ -155,7 +155,7 @@
                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('file_path') border-red-500 @enderror">
                 <p class="text-sm text-gray-500 mt-2">Biarkan kosong jika tidak ingin mengganti file. File saat ini:
                     @if ($dokumen->file_path)
-                        <a href="{{ asset('storage/' . $dokumen->file_path) }}" target="_blank" class="text-blue-600 hover:underline">
+                        <a href="{{ route('admin.dokumen.download', $dokumen->id) }}" class="text-blue-600 hover:underline">
                             {{ basename($dokumen->file_path) }}
                         </a>
                     @else

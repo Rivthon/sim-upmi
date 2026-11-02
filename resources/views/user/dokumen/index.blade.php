@@ -54,7 +54,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             @if($dokumen->file_path)
-                                <a href="{{ asset('storage/' . $dokumen->file_path) }}" class="text-blue-600 hover:text-blue-800 transition duration-200" target="_blank" rel="noopener noreferrer">
+                                <a href="{{ route('user.dokumen.download', $dokumen->id) }}" class="text-blue-600 hover:text-blue-800 transition duration-200">
                                     <svg class="inline-block w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"></path></svg>
                                 </a>
                             @else

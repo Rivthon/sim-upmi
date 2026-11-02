@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SurveyExport;
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Survey;
 use App\Models\SurveyTarget;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\SurveyQuestion;
-use App\Models\SurveyResponse;
-use App\Exports\SurveyExport;
-use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use QuickChart;
 
 class SurveyController extends Controller
@@ -19,6 +17,7 @@ class SurveyController extends Controller
     public function index()
     {
         $surveys = Survey::with('targets')->latest()->get();
+
         return view('admin.survey.index', compact('surveys'));
     }
 
@@ -27,38 +26,47 @@ class SurveyController extends Controller
         return view('admin.survey.create');
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'judul' => 'required|string|max:255',
-        'deskripsi' => 'nullable|string',
-        'target' => 'required|array',
-        'target.*' => 'in:Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
-    ]);
-
-    $survey = Survey::create([
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-    ]);
-
-    foreach ($request->target as $t) {
-        SurveyTarget::create([
-            'survey_id' => $survey->id,
-            'target' => $t
+    public function store(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'target' => 'required|array',
+            'target.*' => 'in:Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
         ]);
+
+        $survey = Survey::create([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        foreach ($request->target as $t) {
+            SurveyTarget::create([
+                'survey_id' => $survey->id,
+                'target' => $t,
+            ]);
+        }
+
+        ActivityLog::record('create', 'survey', $survey, [], [
+            'judul' => $survey->judul,
+            'deskripsi' => $survey->deskripsi,
+            'target' => $request->target,
+        ]);
+
+        return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil dibuat');
     }
 
-    return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil dibuat');
-}
+    public function show($id)
+    {
+        $survey = Survey::with('questions')->findOrFail($id);
 
-public function show($id)
-{
-    $survey = Survey::with('questions')->findOrFail($id);
-    return view('admin.survey.show', compact('survey'));
-}
-public function edit($id)
+        return view('admin.survey.show', compact('survey'));
+    }
+
+    public function edit($id)
     {
         $survey = Survey::with('targets')->findOrFail($id);
+
         return view('admin.survey.edit', compact('survey'));
     }
 
@@ -72,6 +80,12 @@ public function edit($id)
         ]);
 
         $survey = Survey::findOrFail($id);
+        $before = [
+            'judul' => $survey->judul,
+            'deskripsi' => $survey->deskripsi,
+            'target' => $survey->targets()->pluck('target')->values()->all(),
+        ];
+
         $survey->update([
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
@@ -82,22 +96,36 @@ public function edit($id)
         foreach ($request->target as $t) {
             SurveyTarget::create([
                 'survey_id' => $survey->id,
-                'target' => $t
+                'target' => $t,
             ]);
         }
 
+        ActivityLog::record('update', 'survey', $survey, $before, [
+            'judul' => $survey->judul,
+            'deskripsi' => $survey->deskripsi,
+            'target' => $request->target,
+        ]);
+
         return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil diperbarui!');
     }
+
     public function destroy($id)
-{
-    $survey = Survey::findOrFail($id);
+    {
+        $survey = Survey::findOrFail($id);
 
-    // Hapus survey (jika foreign key-nya sudah ON DELETE CASCADE maka relasi ikut kehapus)
-    $survey->delete();
+        ActivityLog::record('delete', 'survey', $survey, [
+            'judul' => $survey->judul,
+            'deskripsi' => $survey->deskripsi,
+            'target' => $survey->targets()->pluck('target')->values()->all(),
+        ]);
 
-    return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil dihapus.');
-}
- public function hasil($id)
+        // Hapus survey (jika foreign key-nya sudah ON DELETE CASCADE maka relasi ikut kehapus)
+        $survey->delete();
+
+        return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil dihapus.');
+    }
+
+    public function hasil($id)
     {
         // Muat survey dan pertanyaan beserta responnya
         $survey = Survey::with(['questions.responses'])->findOrFail($id);
@@ -110,7 +138,7 @@ public function edit($id)
             // Lebih akurat untuk menghitung responden unik:
             // $totalResponses = \App\Models\SurveyResponse::where('survey_id', $survey->id)->distinct('user_id')->count();
         }
-        
+
         foreach ($questions as $q) {
             $q->result_counts = []; // Inisialisasi sebagai array kosong untuk menghindari error jika tidak ada data
 
@@ -131,7 +159,7 @@ public function edit($id)
 
             } elseif (in_array($q->tipe, ['pilihan', 'ganda'])) { // *** FIX INI *** Gunakan nama tipe yang konsisten
                 // Dekode opsi dari JSON. Jika $q->opsi null/invalid, akan menjadi array kosong.
-                $opsi = json_decode($q->opsi, true) ?? []; 
+                $opsi = json_decode($q->opsi, true) ?? [];
                 $counts = array_fill_keys($opsi, 0); // Inisialisasi hitungan untuk setiap opsi
 
                 foreach ($q->responses as $res) {
@@ -155,77 +183,82 @@ public function edit($id)
         return view('admin.survey.hasil', compact('survey', 'questions', 'totalResponses'));
     }
 
-public function export($id)
-{
-$survey = Survey::with('questions.responses.user')->findOrFail($id);
-$fileName = 'Hasil_Survei_' . str_replace(' ', '_', $survey->judul) . '.xlsx';
-return Excel::download(new SurveyExport($survey), $fileName);
-}
+    public function export($id)
+    {
+        $survey = Survey::with('questions.responses.user')->findOrFail($id);
+        $fileName = 'Hasil_Survei_'.str_replace(' ', '_', $survey->judul).'.xlsx';
 
+        ActivityLog::record('export', 'survey', $survey, [], [
+            'judul' => $survey->judul,
+            'format' => 'xlsx',
+        ]);
 
+        return Excel::download(new SurveyExport($survey), $fileName);
+    }
 
-public function exportPdf($id)
-{
-    $survey = Survey::with('questions.responses.user')->findOrFail($id);
+    public function exportPdf($id)
+    {
+        $survey = Survey::with('questions.responses.user')->findOrFail($id);
 
-    // Generate chart untuk setiap pertanyaan (harus sebelum render view)
-foreach ($survey->questions as $q) {
-    if (in_array($q->tipe, ['pilihan', 'ganda'])) {
-        $opsi = json_decode($q->opsi, true) ?? [];
-        $counts = array_fill_keys($opsi, 0);
+        ActivityLog::record('export', 'survey', $survey, [], [
+            'judul' => $survey->judul,
+            'format' => 'pdf',
+        ]);
 
-        foreach ($q->responses as $res) {
-            $jawaban = $q->tipe === 'ganda'
-                ? json_decode($res->jawaban, true) ?? []
-                : [$res->jawaban];
+        // Generate chart untuk setiap pertanyaan (harus sebelum render view)
+        foreach ($survey->questions as $q) {
+            if (in_array($q->tipe, ['pilihan', 'ganda'])) {
+                $opsi = json_decode($q->opsi, true) ?? [];
+                $counts = array_fill_keys($opsi, 0);
 
-            foreach ($jawaban as $j) {
-                if (isset($counts[$j])) {
-                    $counts[$j]++;
+                foreach ($q->responses as $res) {
+                    $jawaban = $q->tipe === 'ganda'
+                        ? json_decode($res->jawaban, true) ?? []
+                        : [$res->jawaban];
+
+                    foreach ($jawaban as $j) {
+                        if (isset($counts[$j])) {
+                            $counts[$j]++;
+                        }
+                    }
                 }
+
+                // Simpan untuk grafik dan presentase
+                $q->result_counts = $counts;
+                $q->chartImage = $this->generateChartImage(array_keys($counts), array_values($counts));
             }
         }
 
-        // Simpan untuk grafik dan presentase
-        $q->result_counts = $counts;
-        $q->chartImage = $this->generateChartImage(array_keys($counts), array_values($counts));
+        // Baru render ke PDF setelah chart disiapkan
+        return Pdf::loadView('admin.survey.export_pdf', compact('survey'))
+            ->setPaper('a4', 'portrait')
+            ->download('Hasil_Survei_'.str_replace(' ', '_', $survey->judul).'.pdf');
+    }
+
+    private function generateChartImage($labels, $data)
+    {
+        $chart = [
+            'type' => 'bar',
+            'data' => [
+                'labels' => $labels,
+                'datasets' => [[
+                    'label' => 'Jumlah Jawaban',
+                    'data' => $data,
+                    'backgroundColor' => '#3B82F6',
+                ]],
+            ],
+            'options' => [
+                'scales' => [
+                    'y' => ['beginAtZero' => true],
+                ],
+            ],
+        ];
+
+        $chartUrl = 'https://quickchart.io/chart?c='.urlencode(json_encode($chart));
+
+        // Ambil base64 image dari QuickChart
+        $imageData = file_get_contents('https://quickchart.io/chart?c='.urlencode(json_encode($chart)));
+
+        return 'data:image/png;base64,'.base64_encode($imageData);
     }
 }
-
-
-    // Baru render ke PDF setelah chart disiapkan
-    return Pdf::loadView('admin.survey.export_pdf', compact('survey'))
-        ->setPaper('a4', 'portrait')
-        ->download('Hasil_Survei_' . str_replace(' ', '_', $survey->judul) . '.pdf');
-}
-
-
-private function generateChartImage($labels, $data)
-{
-    $chart = [
-        'type' => 'bar',
-        'data' => [
-            'labels' => $labels,
-            'datasets' => [[
-                'label' => 'Jumlah Jawaban',
-                'data' => $data,
-                'backgroundColor' => '#3B82F6',
-            ]]
-        ],
-        'options' => [
-            'scales' => [
-                'y' => [ 'beginAtZero' => true ]
-            ]
-        ]
-    ];
-
-    $chartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chart));
-
-    // Ambil base64 image dari QuickChart
-    $imageData = file_get_contents('https://quickchart.io/chart?c=' . urlencode(json_encode($chart)));
-
-    return 'data:image/png;base64,' . base64_encode($imageData);
-}
-
-}
-
