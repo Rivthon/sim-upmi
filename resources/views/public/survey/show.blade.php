@@ -47,8 +47,8 @@
                 <h2 class="text-lg font-extrabold text-slate-950">Informasi Responden</h2>
                 <p class="mt-1 text-sm text-slate-500">Nama dan Unit / Prodi wajib diisi sebelum mengirim survey.</p>
                 <div class="mt-5 grid gap-4 md:grid-cols-2">
-                    <div><label class="mb-2 block text-sm font-bold text-slate-700">Nama <span class="text-red-600">*</span></label><input name="respondent_name" value="{{ old('respondent_name') }}" required autocomplete="name" class="w-full rounded-2xl border-white/70 bg-white/80 px-4 py-3 focus:border-teal-500 focus:ring-teal-500"></div>
-                    <div><label class="mb-2 block text-sm font-bold text-slate-700">Unit / Prodi <span class="text-red-600">*</span></label><input name="respondent_unit" value="{{ old('respondent_unit') }}" required class="w-full rounded-2xl border-white/70 bg-white/80 px-4 py-3 focus:border-teal-500 focus:ring-teal-500"></div>
+                    <div><label class="mb-2 block text-sm font-bold text-slate-700">Nama <span class="text-red-600">*</span></label><input name="respondent_name" value="{{ old('respondent_name') }}" required autocomplete="name" placeholder="Masukkan nama lengkap" class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none placeholder:text-slate-400 hover:border-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100"></div>
+                    <div><label class="mb-2 block text-sm font-bold text-slate-700">Unit / Prodi <span class="text-red-600">*</span></label><input name="respondent_unit" value="{{ old('respondent_unit') }}" required placeholder="Contoh: Prodi Keperawatan" class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none placeholder:text-slate-400 hover:border-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100"></div>
                 </div>
             </section>
 
