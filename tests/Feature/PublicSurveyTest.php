@@ -33,6 +33,7 @@ class PublicSurveyTest extends TestCase
             ->withCookie('survey_respondent_'.$survey->id, $respondentToken)
             ->post(route('survey.public.store', $survey->public_token), [
                 'respondent_name' => 'Responden',
+                'respondent_unit' => 'Program Studi Keperawatan',
                 'jawaban' => [$question->id => '5'],
             ]);
 
@@ -44,6 +45,33 @@ class PublicSurveyTest extends TestCase
             'respondent_token' => $respondentToken,
             'jawaban' => '5',
         ]);
+    }
+
+    public function test_public_survey_requires_respondent_name_and_unit(): void
+    {
+        $survey = Survey::create([
+            'judul' => 'Survey Publik Wajib Identitas',
+            'is_aktif' => true,
+            'is_public' => true,
+            'starts_at' => now()->subHour(),
+            'ends_at' => now()->addDays(2),
+        ]);
+        $question = SurveyQuestion::create([
+            'survey_id' => $survey->id,
+            'pertanyaan' => 'Apakah Anda puas?',
+            'tipe' => 'skala',
+        ]);
+
+        $response = $this
+            ->withCookie('survey_respondent_'.$survey->id, (string) Str::uuid())
+            ->from(route('survey.public.show', $survey->public_token))
+            ->post(route('survey.public.store', $survey->public_token), [
+                'jawaban' => [$question->id => '5'],
+            ]);
+
+        $response->assertRedirect(route('survey.public.show', $survey->public_token));
+        $response->assertSessionHasErrors(['respondent_name', 'respondent_unit']);
+        $this->assertSame(0, SurveyResponse::count());
     }
 
     public function test_expired_public_survey_rejects_page_and_submission(): void

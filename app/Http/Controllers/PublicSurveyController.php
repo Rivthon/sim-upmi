@@ -48,8 +48,8 @@ class PublicSurveyController extends Controller
         }
 
         $rules = [
-            'respondent_name' => ['nullable', 'string', 'max:255'],
-            'respondent_unit' => ['nullable', 'string', 'max:255'],
+            'respondent_name' => ['required', 'string', 'max:255'],
+            'respondent_unit' => ['required', 'string', 'max:255'],
         ];
 
         foreach ($survey->questions as $question) {
@@ -59,6 +59,8 @@ class PublicSurveyController extends Controller
         }
 
         $validated = $request->validate($rules, [
+            'respondent_name.required' => 'Nama responden wajib diisi.',
+            'respondent_unit.required' => 'Unit / Prodi wajib diisi.',
             'jawaban.*.required' => 'Semua pertanyaan wajib dijawab.',
         ]);
 
@@ -71,8 +73,8 @@ class PublicSurveyController extends Controller
                     'question_id' => $question->id,
                     'user_id' => null,
                     'respondent_token' => $respondentToken,
-                    'respondent_name' => $validated['respondent_name'] ?? null,
-                    'respondent_unit' => $validated['respondent_unit'] ?? null,
+                    'respondent_name' => $validated['respondent_name'],
+                    'respondent_unit' => $validated['respondent_unit'],
                     'jawaban' => is_array($answer) ? json_encode($answer) : $answer,
                 ]);
             }
