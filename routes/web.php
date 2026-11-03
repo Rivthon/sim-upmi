@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicBeritaController;
 use App\Http\Controllers\PublicDokumenController;
+use App\Http\Controllers\PublicSurveyController;
 use App\Http\Controllers\User\DokumenController;
 use App\Http\Controllers\User\UserSurveyController;
 use App\Http\Controllers\UserDashboardController;
@@ -136,6 +137,11 @@ Route::get('/berita/{slug}', [PublicBeritaController::class, 'show'])->name('ber
 Route::get('/dokumen-publik', [PublicDokumenController::class, 'index'])->name('dokumen.publik.index');
 Route::get('/dokumen-publik/file/{dokumen}', [PublicDokumenController::class, 'download'])->name('dokumen.publik.download');
 Route::get('/dokumen-publik/{slug}', [PublicDokumenController::class, 'show'])->name('dokumen.publik.show');
+Route::get('/survey-publik/{token}', [PublicSurveyController::class, 'show'])->name('survey.public.show');
+Route::post('/survey-publik/{token}', [PublicSurveyController::class, 'store'])
+    ->middleware('throttle:30,1')
+    ->name('survey.public.store');
+Route::get('/survey-publik/{token}/terima-kasih', [PublicSurveyController::class, 'thanks'])->name('survey.public.thanks');
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 //
 

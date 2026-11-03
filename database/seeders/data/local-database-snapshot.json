@@ -1,5 +1,5 @@
 {
-    "exported_at": "2026-11-02T07:34:08+00:00",
+    "exported_at": "2026-11-03T02:58:40+00:00",
     "database": "sim_upmi",
     "tables": {
         "users": [
@@ -506,21 +506,68 @@
         "surveys": [
             {
                 "id": 24,
+                "public_token": null,
                 "judul": "TEST SURVEI KEPUASAN TENDIK",
                 "deskripsi": null,
                 "target": null,
                 "is_aktif": 0,
+                "is_public": 0,
+                "starts_at": null,
+                "ends_at": null,
                 "created_at": "2025-06-25 08:01:08",
                 "updated_at": "2025-06-25 08:01:08"
             },
             {
                 "id": 27,
+                "public_token": null,
                 "judul": "TEST Survey SBH",
                 "deskripsi": "INI TEST AJA",
                 "target": null,
                 "is_aktif": 0,
+                "is_public": 0,
+                "starts_at": null,
+                "ends_at": null,
                 "created_at": "2025-07-01 11:29:01",
                 "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 28,
+                "public_token": "e52972ef-3662-4fff-b671-00ed96f196bc",
+                "judul": "Survei Kepuasan Layanan Akademik dan Nonakademik",
+                "deskripsi": "Evaluasi pengalaman civitas terhadap layanan akademik dan layanan pendukung kampus.",
+                "target": null,
+                "is_aktif": 1,
+                "is_public": 1,
+                "starts_at": "2026-11-03 02:58:08",
+                "ends_at": "2026-11-05 02:58:08",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:58:08"
+            },
+            {
+                "id": 29,
+                "public_token": "407d175a-4eb5-4021-9648-e4d6e188221f",
+                "judul": "Survei Kepuasan Manajemen dan Tata Kelola",
+                "deskripsi": "Evaluasi transparansi, komunikasi, kepemimpinan, dan tata kelola institusi.",
+                "target": null,
+                "is_aktif": 1,
+                "is_public": 1,
+                "starts_at": "2026-11-03 02:58:08",
+                "ends_at": "2026-11-05 02:58:08",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:58:08"
+            },
+            {
+                "id": 30,
+                "public_token": "bfafed16-0cce-40de-be80-813928aa6e15",
+                "judul": "Survei Kepuasan Sarana dan Prasarana",
+                "deskripsi": "Evaluasi kenyamanan, kelayakan, kebersihan, dan aksesibilitas fasilitas kampus.",
+                "target": null,
+                "is_aktif": 1,
+                "is_public": 1,
+                "starts_at": "2026-11-03 02:58:08",
+                "ends_at": "2026-11-05 02:58:08",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:58:08"
             }
         ],
         "survey_targets": [
@@ -565,6 +612,27 @@
                 "target": "Mahasiswa",
                 "created_at": "2025-07-01 11:29:01",
                 "updated_at": "2025-07-01 11:29:01"
+            },
+            {
+                "id": 46,
+                "survey_id": 28,
+                "target": "Umum",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44"
+            },
+            {
+                "id": 47,
+                "survey_id": 29,
+                "target": "Umum",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44"
+            },
+            {
+                "id": 48,
+                "survey_id": 30,
+                "target": "Umum",
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44"
             }
         ],
         "survey_questions": [
@@ -639,6 +707,168 @@
                 "created_at": "2025-07-01 11:29:39",
                 "updated_at": "2025-07-01 11:29:39",
                 "survey_id": 27
+            },
+            {
+                "id": 72,
+                "pertanyaan": "Informasi layanan akademik disampaikan dengan jelas.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 73,
+                "pertanyaan": "Petugas memberikan pelayanan dengan ramah dan responsif.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 74,
+                "pertanyaan": "Proses administrasi akademik mudah dipahami.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 75,
+                "pertanyaan": "Layanan nonakademik membantu kebutuhan civitas kampus.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 76,
+                "pertanyaan": "Secara keseluruhan saya puas terhadap layanan kampus.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 77,
+                "pertanyaan": "Saran dan masukan untuk perbaikan layanan.",
+                "tipe": "teks",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 28
+            },
+            {
+                "id": 78,
+                "pertanyaan": "Kebijakan institusi disampaikan secara transparan.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 79,
+                "pertanyaan": "Pimpinan menindaklanjuti masukan dari civitas kampus.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 80,
+                "pertanyaan": "Koordinasi antarunit berjalan efektif.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 81,
+                "pertanyaan": "Pengambilan keputusan dilakukan secara akuntabel.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 82,
+                "pertanyaan": "Secara keseluruhan saya puas terhadap tata kelola institusi.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 83,
+                "pertanyaan": "Saran dan masukan untuk perbaikan layanan.",
+                "tipe": "teks",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 29
+            },
+            {
+                "id": 84,
+                "pertanyaan": "Ruang pembelajaran nyaman dan layak digunakan.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
+            },
+            {
+                "id": 85,
+                "pertanyaan": "Fasilitas teknologi mendukung kegiatan akademik.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
+            },
+            {
+                "id": 86,
+                "pertanyaan": "Kebersihan lingkungan kampus terjaga.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
+            },
+            {
+                "id": 87,
+                "pertanyaan": "Sarana pendukung mudah diakses saat dibutuhkan.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
+            },
+            {
+                "id": 88,
+                "pertanyaan": "Secara keseluruhan saya puas terhadap sarana dan prasarana.",
+                "tipe": "skala",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
+            },
+            {
+                "id": 89,
+                "pertanyaan": "Saran dan masukan untuk perbaikan layanan.",
+                "tipe": "teks",
+                "opsi": null,
+                "created_at": "2026-11-03 02:56:44",
+                "updated_at": "2026-11-03 02:56:44",
+                "survey_id": 30
             }
         ],
         "survey_question_options": [],
@@ -649,6 +879,9 @@
                 "survey_id": 24,
                 "question_id": 56,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "TEST",
                 "created_at": "2025-06-25 08:02:00",
                 "updated_at": "2025-06-25 08:02:00"
@@ -658,6 +891,9 @@
                 "survey_id": 24,
                 "question_id": 57,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "5",
                 "created_at": "2025-06-25 08:02:00",
                 "updated_at": "2025-06-25 08:02:00"
@@ -667,6 +903,9 @@
                 "survey_id": 24,
                 "question_id": 58,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "[\"2\",\"3\"]",
                 "created_at": "2025-06-25 08:02:00",
                 "updated_at": "2025-06-25 08:02:00"
@@ -676,6 +915,9 @@
                 "survey_id": 24,
                 "question_id": 59,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "2",
                 "created_at": "2025-06-25 08:02:00",
                 "updated_at": "2025-06-25 08:02:00"
@@ -685,6 +927,9 @@
                 "survey_id": 24,
                 "question_id": 56,
                 "user_id": 7,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "TAK",
                 "created_at": "2025-06-25 08:21:29",
                 "updated_at": "2025-06-25 08:21:29"
@@ -694,6 +939,9 @@
                 "survey_id": 24,
                 "question_id": 57,
                 "user_id": 7,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "4",
                 "created_at": "2025-06-25 08:21:29",
                 "updated_at": "2025-06-25 08:21:29"
@@ -703,6 +951,9 @@
                 "survey_id": 24,
                 "question_id": 58,
                 "user_id": 7,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "[\"1\",\"2\",\"3\"]",
                 "created_at": "2025-06-25 08:21:29",
                 "updated_at": "2025-06-25 08:21:29"
@@ -712,6 +963,9 @@
                 "survey_id": 24,
                 "question_id": 59,
                 "user_id": 7,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "2",
                 "created_at": "2025-06-25 08:21:29",
                 "updated_at": "2025-06-25 08:21:29"
@@ -721,6 +975,9 @@
                 "survey_id": 27,
                 "question_id": 68,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "TEST AJA",
                 "created_at": "2025-07-01 11:30:00",
                 "updated_at": "2025-07-01 11:30:00"
@@ -730,6 +987,9 @@
                 "survey_id": 27,
                 "question_id": 69,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "5",
                 "created_at": "2025-07-01 11:30:00",
                 "updated_at": "2025-07-01 11:30:00"
@@ -739,6 +999,9 @@
                 "survey_id": 27,
                 "question_id": 70,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "baik",
                 "created_at": "2025-07-01 11:30:00",
                 "updated_at": "2025-07-01 11:30:00"
@@ -748,6 +1011,9 @@
                 "survey_id": 27,
                 "question_id": 71,
                 "user_id": 6,
+                "respondent_token": null,
+                "respondent_name": null,
+                "respondent_unit": null,
                 "jawaban": "[\"cukup\",\"jelek\"]",
                 "created_at": "2025-07-01 11:30:00",
                 "updated_at": "2025-07-01 11:30:00"

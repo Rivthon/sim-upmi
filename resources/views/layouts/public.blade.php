@@ -91,5 +91,6 @@
             <p>Dikelola oleh Tim ICT.</p>
         </div>
     </footer>
+    @stack('scripts')
 </body>
 </html>

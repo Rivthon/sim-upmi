@@ -9,6 +9,7 @@ use App\Models\Survey;
 use App\Models\SurveyTarget;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use QuickChart;
 
@@ -16,7 +17,7 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::with('targets')->latest()->get();
+        $surveys = Survey::with('targets')->withCount(['questions', 'responses'])->latest()->get();
 
         return view('admin.survey.index', compact('surveys'));
     }
@@ -28,19 +29,28 @@ class SurveyController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'target' => 'required|array',
-            'target.*' => 'in:Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
+            'target.*' => 'in:Umum,Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
+            'is_public' => 'nullable|boolean',
+            'is_aktif' => 'nullable|boolean',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after:starts_at',
         ]);
 
         $survey = Survey::create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
+            'judul' => $data['judul'],
+            'deskripsi' => $data['deskripsi'] ?? null,
+            'is_public' => $request->boolean('is_public'),
+            'is_aktif' => $request->boolean('is_aktif'),
+            'starts_at' => $data['starts_at'] ?? null,
+            'ends_at' => $data['ends_at'] ?? null,
+            'public_token' => (string) Str::uuid(),
         ]);
 
-        foreach ($request->target as $t) {
+        foreach ($data['target'] as $t) {
             SurveyTarget::create([
                 'survey_id' => $survey->id,
                 'target' => $t,
@@ -50,7 +60,10 @@ class SurveyController extends Controller
         ActivityLog::record('create', 'survey', $survey, [], [
             'judul' => $survey->judul,
             'deskripsi' => $survey->deskripsi,
-            'target' => $request->target,
+            'target' => $data['target'],
+            'is_public' => $survey->is_public,
+            'starts_at' => $survey->starts_at,
+            'ends_at' => $survey->ends_at,
         ]);
 
         return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil dibuat');
@@ -72,11 +85,15 @@ class SurveyController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'target' => 'required|array',
-            'target.*' => 'in:Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
+            'target.*' => 'in:Umum,Prodi D3 Kebidanan,Prodi S1 Farmasi,Prodi S1 Gizi,Tendik,Mahasiswa',
+            'is_public' => 'nullable|boolean',
+            'is_aktif' => 'nullable|boolean',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after:starts_at',
         ]);
 
         $survey = Survey::findOrFail($id);
@@ -84,16 +101,25 @@ class SurveyController extends Controller
             'judul' => $survey->judul,
             'deskripsi' => $survey->deskripsi,
             'target' => $survey->targets()->pluck('target')->values()->all(),
+            'is_public' => $survey->is_public,
+            'is_aktif' => $survey->is_aktif,
+            'starts_at' => $survey->starts_at,
+            'ends_at' => $survey->ends_at,
         ];
 
         $survey->update([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
+            'judul' => $data['judul'],
+            'deskripsi' => $data['deskripsi'] ?? null,
+            'is_public' => $request->boolean('is_public'),
+            'is_aktif' => $request->boolean('is_aktif'),
+            'starts_at' => $data['starts_at'] ?? null,
+            'ends_at' => $data['ends_at'] ?? null,
+            'public_token' => $survey->public_token ?: (string) Str::uuid(),
         ]);
 
         // Update target
         SurveyTarget::where('survey_id', $survey->id)->delete();
-        foreach ($request->target as $t) {
+        foreach ($data['target'] as $t) {
             SurveyTarget::create([
                 'survey_id' => $survey->id,
                 'target' => $t,
@@ -103,7 +129,11 @@ class SurveyController extends Controller
         ActivityLog::record('update', 'survey', $survey, $before, [
             'judul' => $survey->judul,
             'deskripsi' => $survey->deskripsi,
-            'target' => $request->target,
+            'target' => $data['target'],
+            'is_public' => $survey->is_public,
+            'is_aktif' => $survey->is_aktif,
+            'starts_at' => $survey->starts_at,
+            'ends_at' => $survey->ends_at,
         ]);
 
         return redirect()->route('admin.survey.index')->with('success', 'Survey berhasil diperbarui!');

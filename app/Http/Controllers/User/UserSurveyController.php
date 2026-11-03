@@ -18,6 +18,13 @@ class UserSurveyController extends Controller
         $targets = $this->targetsFor($user);
 
         $surveys = Survey::with('responses')
+            ->where('is_aktif', true)
+            ->where(function ($query) {
+                $query->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+            })
             ->whereHas('targets', function ($q) use ($targets) {
                 $q->whereIn('target', $targets);
             })
@@ -86,7 +93,7 @@ class UserSurveyController extends Controller
 
     private function canAccessSurvey(Survey $survey): bool
     {
-        return $survey->targets
+        return $survey->isWithinSchedule() && $survey->targets
             ->pluck('target')
             ->intersect($this->targetsFor(Auth::user()))
             ->isNotEmpty();
@@ -95,6 +102,7 @@ class UserSurveyController extends Controller
     private function targetsFor($user): array
     {
         return collect([
+            'Umum',
             $user->hasRole('dosen') || $user->hasRole('gpm') ? 'Prodi' : null,
             $user->hasRole('tendik') ? 'Tendik' : null,
             $user->hasRole('mahasiswa') ? 'Mahasiswa' : null,

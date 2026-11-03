@@ -13,7 +13,10 @@ class SurveyResponse extends Model
         'survey_id',
         'question_id',
         'user_id',
-        'jawaban'
+        'respondent_token',
+        'respondent_name',
+        'respondent_unit',
+        'jawaban',
     ];
 
     public function survey()

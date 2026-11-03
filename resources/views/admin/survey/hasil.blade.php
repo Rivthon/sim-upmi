@@ -16,8 +16,8 @@
             <div>
                 <p class="text-gray-500 font-semibold text-sm uppercase mb-1">Status Survei</p>
                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-base font-semibold leading-tight
-                    {{ $survey->status == 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                    {{ ucfirst($survey->status) }}
+                    {{ $survey->publicStatus() == 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                    {{ ucfirst($survey->publicStatus()) }}
                 </span>
             </div>
             <div class="md:col-span-2">

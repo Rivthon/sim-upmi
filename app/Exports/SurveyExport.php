@@ -25,7 +25,9 @@ class SurveyExport implements FromArray, WithHeadings, WithTitle
             $responses = $question->responses;
 
             foreach ($responses as $response) {
-                $userName = optional($response->user)->name ?? 'Anonim';
+                $userName = optional($response->user)->name
+                    ?? $response->respondent_name
+                    ?? 'Anonim';
                 $answer = $response->jawaban;
 
                 // Decode jika JSON
@@ -39,6 +41,7 @@ class SurveyExport implements FromArray, WithHeadings, WithTitle
                     'Tipe' => $question->tipe,
                     'Jawaban' => $answer,
                     'User' => $userName,
+                    'Unit' => $response->respondent_unit ?? optional($response->user)->unit ?? '-',
                 ];
             }
         }
@@ -48,7 +51,7 @@ class SurveyExport implements FromArray, WithHeadings, WithTitle
 
     public function headings(): array
     {
-        return ['Pertanyaan', 'Tipe', 'Jawaban', 'User'];
+        return ['Pertanyaan', 'Tipe', 'Jawaban', 'User', 'Unit'];
     }
 
     public function title(): string
